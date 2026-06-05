@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { CartItem } from "@/store/useCart";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-
 interface CheckoutDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,7 +14,6 @@ interface CheckoutDrawerProps {
   onRemoveItem?: (id: string) => void;
   showAddMore?: boolean;
 }
-
 export default function CheckoutDrawer({ 
   isOpen, 
   onClose, 
@@ -29,34 +27,46 @@ export default function CheckoutDrawer({
   const [pickupDate, setPickupDate] = useState<Date | null>(null);
   const [notes, setNotes] = useState("");
   const [nameError, setNameError] = useState(false);
+  const [dateError, setDateError] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
-
+  const dateInputRef = useRef<HTMLButtonElement>(null);
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
-
   // Clear error when typing
   useEffect(() => {
     if (customerName.trim() && nameError) {
       setNameError(false);
     }
   }, [customerName, nameError]);
-
+  useEffect(() => {
+    if (pickupDate && dateError) {
+      setDateError(false);
+    }
+  }, [pickupDate, dateError]);
   const handleCheckout = () => {
     if (items.length === 0) return;
     
+    let hasError = false;
     if (!customerName.trim()) {
       setNameError(true);
       nameInputRef.current?.focus();
       nameInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
+      hasError = true;
     }
+    if (!pickupDate) {
+      setDateError(true);
+      if (!hasError) {
+        dateInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      hasError = true;
+    }
+    if (hasError) return;
     
     const formattedDate = pickupDate ? pickupDate.toLocaleDateString("id-ID", { 
       day: "numeric", 
       month: "long", 
       year: "numeric" 
     }) : "";
-
     let message = `*𐙚 Halo, ololeo bucket*\n\n`;
     message += `Saya ingin pesan bucket\n`;
     message += `────୨ৎ──── \n`;
@@ -74,7 +84,6 @@ export default function CheckoutDrawer({
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/6288809482113?text=${encodedMessage}`, "_blank");
   };
-
   return (
     <>
       <div 
@@ -99,7 +108,6 @@ export default function CheckoutDrawer({
             <X className="w-6 h-6" />
           </button>
         </div>
-
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
@@ -153,7 +161,9 @@ export default function CheckoutDrawer({
                             </button>
                           )}
                         </div>
-                        <p className="text-secondary font-bold">Rp {item.price.toLocaleString("id-ID")}</p>
+                        <p className="text-secondary font-bold">
+                          <span translate="no">Rp {item.price.toLocaleString("id-ID")}</span>
+                        </p>
                       </div>
                       <div className="flex items-center gap-3 bg-gray-50 self-start p-1.5 rounded-xl border border-gray-100">
                         <button 
@@ -203,18 +213,34 @@ export default function CheckoutDrawer({
                     </div>
                     
                     <div className="relative">
-                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40 pointer-events-none" />
+                      <Calendar className={cn(
+                        "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors pointer-events-none",
+                        dateError ? "text-red-400" : "text-primary/40"
+                      )} />
                       <button 
+                        ref={dateInputRef}
                         type="button"
                         onClick={() => setShowCalendar(true)}
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 border-pink-50 focus:border-primary/30 outline-none transition-all font-medium text-gray-700 shadow-sm text-left flex items-center justify-between"
+                        className={cn(
+                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 outline-none transition-all font-medium text-gray-700 shadow-sm text-left flex items-center justify-between",
+                          dateError 
+                            ? "border-red-400 focus:border-red-500 ring-4 ring-red-50" 
+                            : "border-pink-50 focus:border-primary/30"
+                        )}
                       >
                         <span className={pickupDate ? "text-gray-800" : "text-gray-400"}>
                           {pickupDate ? pickupDate.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Pilih Tanggal Pengambilan"}
                         </span>
                         <span className="text-[10px] text-gray-300 font-bold uppercase">Ubah</span>
                       </button>
-
+                      <input 
+                        type="hidden" 
+                        required={true}
+                        value={pickupDate ? pickupDate.toISOString() : ""} 
+                      />
+                      {dateError && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan pilih tanggal pengambilan</p>
+                      )}
                       {/* Aesthetic Custom Calendar */}
                       <AnimatePresence>
                         {showCalendar && (
@@ -244,7 +270,6 @@ export default function CheckoutDrawer({
                         )}
                       </AnimatePresence>
                     </div>
-
                     <div className="relative">
                       <FileText className="absolute left-4 top-5 w-5 h-5 text-primary/40" />
                       <textarea 
@@ -258,7 +283,6 @@ export default function CheckoutDrawer({
                   </div>
                 </div>
               </div>
-
               {/* Summary Section (Receipt Style) */}
               <div className="lg:col-span-5">
                 <div className="sticky top-0">
@@ -274,20 +298,22 @@ export default function CheckoutDrawer({
                       <h4 className="font-bold text-gray-800 text-xl">OLOLEO BUCKET</h4>
                       <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest font-medium">Official Receipt</p>
                     </div>
-
                     <div className="space-y-4 font-medium text-sm text-gray-600">
                       <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
                         <span>Pemesan:</span>
                         <span className={cn(
                           "font-bold transition-colors",
                           nameError ? "text-red-500" : "text-gray-900"
-                        )}>{customerName || "-"}</span>
+                        )}>
+                          <span translate="no">{customerName || "-"}</span>
+                        </span>
                       </div>
-
                       <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
                         <span>Tgl Ambil:</span>
                         <span className="text-gray-900 font-bold">
-                          {pickupDate ? pickupDate.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : "-"}
+                          <span key={pickupDate ? pickupDate.getTime() : "none"}>
+                            {pickupDate ? pickupDate.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : "-"}
+                          </span>
                         </span>
                       </div>
                       
@@ -295,22 +321,22 @@ export default function CheckoutDrawer({
                         {items.map((item) => (
                           <div key={item.id} className="flex justify-between">
                             <span className="flex-1 pr-4">{item.name} <span className="text-primary text-xs ml-1 font-bold">x{item.quantity}</span></span>
-                            <span className="text-gray-900">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
+                            <span className="text-gray-900">
+                              <span translate="no">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
+                            </span>
                           </div>
                         ))}
                       </div>
-
                       {notes && (
                         <div className="pt-4 border-t border-dashed border-gray-100">
                           <span className="text-xs text-gray-400 block mb-1">Catatan:</span>
                           <p className="text-gray-800 text-xs italic bg-gray-50 p-3 rounded-xl border border-gray-100">"{notes}"</p>
                         </div>
                       )}
-
                       <div className="pt-6 mt-6 border-t-2 border-gray-100 flex justify-between items-center">
                         <span className="text-lg font-bold text-gray-800">Total</span>
                         <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                          Rp {totalPrice.toLocaleString("id-ID")}
+                          <span translate="no">Rp {totalPrice.toLocaleString("id-ID")}</span>
                         </span>
                       </div>
                       
@@ -318,7 +344,6 @@ export default function CheckoutDrawer({
                         Anda akan diarahkan ke WhatsApp ketika menekan tombol checkout
                       </div>
                     </div>
-
                     {/* Jagged edge simulation */}
                     <div className="absolute -bottom-1 left-0 right-0 flex overflow-hidden">
                        {[...Array(20)].map((_, i) => (
@@ -364,7 +389,6 @@ export default function CheckoutDrawer({
     </>
   );
 }
-
 function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null, onSelect: (date: Date) => void }) {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate || new Date()));
   
@@ -373,30 +397,51 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
   
   const monthName = currentMonth.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
   const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
-
   const nextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
-  const prevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
-
+  const prevMonth = () => {
+    const today = new Date();
+    const prevMonthDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    if (prevMonthDate.getFullYear() < today.getFullYear() || 
+        (prevMonthDate.getFullYear() === today.getFullYear() && prevMonthDate.getMonth() < today.getMonth())) {
+      return;
+    }
+    setCurrentMonth(prevMonthDate);
+  };
   const isSelected = (day: number) => {
     return selectedDate && 
            selectedDate.getDate() === day && 
            selectedDate.getMonth() === currentMonth.getMonth() && 
            selectedDate.getFullYear() === currentMonth.getFullYear();
   };
-
   const isToday = (day: number) => {
     const today = new Date();
     return today.getDate() === day && 
            today.getMonth() === currentMonth.getMonth() && 
            today.getFullYear() === currentMonth.getFullYear();
   };
-
+  const isPastDate = (day: number) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateToCheck = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    return dateToCheck < today;
+  };
+  const todayDate = new Date();
+  const isPrevMonthDisabled = currentMonth.getFullYear() < todayDate.getFullYear() || 
+    (currentMonth.getFullYear() === todayDate.getFullYear() && currentMonth.getMonth() <= todayDate.getMonth());
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-6">
-        <h4 className="font-bold text-gray-800 capitalize">{monthName}</h4>
+        <h4 className="font-bold text-gray-800 capitalize">
+          <span key={monthName}>{monthName}</span>
+        </h4>
         <div className="flex gap-2">
-          <button onClick={prevMonth} className="p-2 hover:bg-pink-50 rounded-xl transition-colors"><ChevronLeft className="w-4 h-4 text-primary" /></button>
+          <button 
+            onClick={prevMonth} 
+            disabled={isPrevMonthDisabled}
+            className="p-2 hover:bg-pink-50 rounded-xl transition-colors disabled:opacity-20 disabled:pointer-events-none"
+          >
+            <ChevronLeft className="w-4 h-4 text-primary" />
+          </button>
           <button onClick={nextMonth} className="p-2 hover:bg-pink-50 rounded-xl transition-colors"><ChevronRight className="w-4 h-4 text-primary" /></button>
         </div>
       </div>
@@ -406,20 +451,23 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
           <div key={d} className="text-[10px] font-bold text-gray-300 text-center uppercase py-2">{d}</div>
         ))}
       </div>
-
       <div className="grid grid-cols-7 gap-1">
         {[...Array(firstDayOfMonth)].map((_, i) => <div key={`empty-${i}`} />)}
         {[...Array(daysInMonth)].map((_, i) => {
           const day = i + 1;
+          const disabled = isPastDate(day);
           return (
             <button
               key={day}
-              onClick={() => onSelect(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day))}
+              onClick={() => !disabled && onSelect(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day))}
+              disabled={disabled}
               className={cn(
                 "h-10 w-10 flex items-center justify-center rounded-xl text-sm font-medium transition-all relative",
                 isSelected(day) 
                   ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg shadow-primary/30 scale-110 z-10" 
-                  : "text-gray-600 hover:bg-pink-50 hover:text-primary",
+                  : disabled
+                    ? "text-gray-300 cursor-not-allowed opacity-40"
+                    : "text-gray-600 hover:bg-pink-50 hover:text-primary",
                 isToday(day) && !isSelected(day) && "text-primary font-bold after:content-[''] after:absolute after:bottom-1.5 after:w-1 after:h-1 after:bg-primary after:rounded-full"
               )}
             >
@@ -431,4 +479,3 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
     </div>
   );
 }
-

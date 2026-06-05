@@ -332,7 +332,7 @@ export const products: Product[] = [
   {
     id: "44",
     name: "Daffodils Satu Tangkai",
-    price: 7500,
+    price: 10000,
     image: "/davodils.webp",
     category: "Custom",
     description: "Daffodils Satu Tangkai bebas pilih warna.",

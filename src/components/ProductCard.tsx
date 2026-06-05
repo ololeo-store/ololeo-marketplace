@@ -22,6 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/80 backdrop-blur-md px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-semibold text-secondary">
@@ -33,7 +34,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
           <p className="mt-1 md:mt-2 text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-            Rp {product.price.toLocaleString("id-ID")}
+            <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
           </p>
         </div>
       </Link>

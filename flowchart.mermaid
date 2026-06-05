@@ -1,0 +1,94 @@
+flowchart TD
+    %% Entry points
+    Start([Mulai / Masuk Website]) --> UserType{Pilih Peran}
+
+    %% User Journey Path
+    UserType -->|Pengunjung / Pembeli| Home[Landing Page / Home]
+    UserType -->|Admin| Login[Halaman Login Admin]
+
+    %% Home Page Sub-Flows
+    Home --> Gallery[GallerySection - Lihat Galeri Bunga]
+    Home --> Reviews[ReviewSection - Lihat Review & Kirim Review Baru]
+    Home --> Map[MapSection - Lihat Lokasi Toko]
+    Home --> About[Halaman About - Tentang Kami]
+    Home --> Shop[Halaman Shop - Katalog Produk]
+    Home --> ChatbotWidget[Web Chatbot AI Widget]
+
+    %% Chatbot AI Flow
+    Shop --> ChatbotWidget
+    ChatbotWidget -->|Tanya Bunga / Rekomendasi| AIChatService[AI Chatbot Service - Gemini API]
+    AIChatService -.->|Ambil Data Produk & Toko| DB[(Database Dynamic)]
+    AIChatService -->|Kirim Jawaban & Link Produk| ChatbotWidget
+
+    %% WhatsApp Chatbot Flow
+    WAPath([Chat WA ke Toko]) --> WAWebhook[WhatsApp API Webhook]
+    WAWebhook --> AIChatService
+    AIChatService -->|Kirim Balasan via WA API| WAPath
+
+    %% Shop & Product Detail Flow
+    Shop --> Filter[Filter Kategori & Pencarian Produk]
+    Filter --> ProductCard[ProductCard - Klik Detail Produk]
+    ProductCard --> ProductDetail[Halaman Detail Produk /product/id]
+    
+    %% Add to Cart and Checkout
+    ProductDetail -->|Pilih Jumlah & Custom| AddToCart[Tambah ke Keranjang]
+    Shop -->|Pilih Langsung| AddToCart
+    AddToCart --> CartDrawer[CartDrawer / Keranjang Belanja]
+    CartDrawer --> CheckoutDrawer[CheckoutDrawer - Formulir Pesanan]
+    
+    %% Checkout Submission & Payment Gateway Flow
+    CheckoutDrawer --> InputForm[Isi Nama, Tanggal Pengambilan & Catatan Custom]
+    InputForm --> Validate{Validasi Input?}
+    Validate -->|Tidak Valid| ShowError[Tampilkan Error Form]
+    ShowError --> InputForm
+    Validate -->|Valid| SaveOrderDB[Simpan Data Pesanan ke DB - Status Unpaid]
+    
+    SaveOrderDB --> PayGateway[Inisiasi Payment Gateway - Midtrans/Xendit]
+    PayGateway --> PayProcess{Proses Pembayaran}
+    PayProcess -->|Sukses / Gagal / Kadaluarsa| PayCallback[Payment Gateway Webhook/Callback]
+    PayCallback --> UpdatePaymentDB[Perbarui Status Pembayaran & Transaksi di DB]
+    UpdatePaymentDB --> SendWANotif[Kirim Notifikasi WhatsApp Otomatis ke User & Admin]
+    SendWANotif --> FinishOrder([Selesai])
+
+    %% Review submission flow
+    Reviews --> WriteReview[Kirim Form Review Baru]
+    WriteReview --> SaveReviewDB[Simpan ke DB dengan Status Pending]
+
+    %% Admin Path & Dashboard Flow
+    Login --> AuthCheck{Autentikasi?}
+    AuthCheck -->|Gagal| Login
+    AuthCheck -->|Sukses| AdminDash[Admin Dashboard]
+
+    %% Admin Actions
+    AdminDash --> ManageProducts[Kelola Produk CRUD]
+    AdminDash --> ManageCategories[Kelola Kategori CRUD]
+    AdminDash --> ManageOrders[Kelola Pesanan & Update Status]
+    AdminDash --> ManageReviews[Moderasi & Approval Review]
+    AdminDash --> ManageGallery[Kelola Foto Galeri]
+    AdminDash --> ManageSettings[Kelola Kontak WA & Lokasi Map]
+    AdminDash --> ManageAIChatbot[Kelola Konfigurasi AI Chatbot]
+    AdminDash --> AISocialAuto[Kelola AI Auto-Post IG/TikTok]
+
+    %% AI Social Media Auto-Post Flow
+    AISocialAuto -->|Pilih Produk & Prompt| AICaptionGen[AI Content Generator - Gemini API]
+    AICaptionGen -->|Hasilkan Caption & Jadwal Post| SavePostDB[Simpan ke DB Post dengan Status Scheduled]
+    CronScheduler[Cron Job Scheduler] -.->|Cek Post Terjadwal| DB
+    CronScheduler -->|Kirim Media & Caption ke API| SocialPlatforms[Instagram & TikTok APIs]
+    SocialPlatforms -->|Update Status ke Posted/Failed| DB
+
+    %% Database integrations
+    ManageProducts -.->|Simpan Perubahan| DB
+    ManageCategories -.->|Simpan Perubahan| DB
+    ManageOrders -.->|Perbarui Status| DB
+    ManageReviews -.->|Approve Review| DB
+    ManageGallery -.->|Perbarui Foto| DB
+    ManageSettings -.->|Perbarui Konfigurasi| DB
+    ManageAIChatbot -.->|Perbarui Parameter AI| DB
+    SavePostDB -.-> DB
+
+    %% User loading data
+    DB -.->|Ambil Data Dinamis| Shop
+    DB -.->|Ambil Review Terpilih| Reviews
+    DB -.->|Ambil Foto Galeri| Gallery
+    DB -.->|Simpan Pesanan Baru| SaveOrderDB
+    DB -.->|Simpan Review Baru| SaveReviewDB

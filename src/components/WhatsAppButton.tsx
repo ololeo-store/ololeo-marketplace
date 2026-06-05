@@ -1,11 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function WhatsAppButton() {
   const phoneNumber = "6288809482113"; // Based on Footer info
   const message = "Hallo, saya ingin membeli bucket";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const pathname = usePathname();
+  const isProductPage = pathname?.startsWith("/product/");
 
   return (
     <motion.a
@@ -22,7 +25,9 @@ export default function WhatsAppButton() {
         damping: 20,
         delay: 2 // Show after preloader/intro
       }}
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-[#f9a8d4] via-[#f472b6] to-[#a78bfa] rounded-full shadow-2xl hover:shadow-[#f9a8d4]/50 transition-shadow duration-300"
+      className={`fixed ${
+        isProductPage ? "bottom-24 md:bottom-6" : "bottom-6"
+      } right-6 z-50 flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-[#f9a8d4] via-[#f472b6] to-[#a78bfa] rounded-full shadow-2xl hover:shadow-[#f9a8d4]/50 transition-all duration-300`}
       aria-label="Chat on WhatsApp"
     >
       <svg

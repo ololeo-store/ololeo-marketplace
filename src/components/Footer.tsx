@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-indigo-50 to-primary/10 pt-16 pb-8 border-t border-primary/20">
@@ -9,6 +8,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 inline-block">
               Ololeo Store
+              Ololeo Bucket
             </Link>
             <p className="text-gray-600 max-w-sm mt-2">
               Send Happiness in Every Bloom. We provide the most beautiful handcrafted flower buckets for your special moments.
@@ -33,6 +33,7 @@ export default function Footer() {
         </div>
         <div className="text-center text-gray-500 text-sm border-t border-gray-200 pt-8">
           &copy; {new Date().getFullYear()} Ololeo Store. All rights reserved.
+          &copy; {new Date().getFullYear()} Ololeo Bucket. All rights reserved.
         </div>
       </div>
     </footer>

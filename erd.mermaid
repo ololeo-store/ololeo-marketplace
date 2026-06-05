@@ -1,0 +1,152 @@
+erDiagram
+    users {
+        uuid id PK
+        varchar email UK "nullable for guests"
+        varchar password_hash "nullable for guests"
+        varchar name "full name"
+        varchar phone_number "for whatsapp communication"
+        varchar role "admin, customer"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    categories {
+        uuid id PK
+        varchar name "e.g., Birthday, Romantic"
+        varchar slug UK "URL slug"
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    products {
+        uuid id PK
+        uuid category_id FK
+        varchar name
+        varchar slug UK "URL slug"
+        int price "price in IDR"
+        varchar image_url "primary image path"
+        text description
+        int stock
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    orders {
+        uuid id PK
+        uuid customer_id FK "nullable for guests"
+        varchar customer_name
+        varchar customer_phone
+        date pickup_date
+        text notes "custom instructions"
+        int total_price
+        varchar status "pending, confirmed, completed, cancelled"
+        varchar payment_status "unpaid, paid, expired, failed"
+        varchar payment_token "payment gateway token / snap token"
+        varchar payment_url "payment checkout url"
+        boolean whatsapp_sent
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    order_items {
+        uuid id PK
+        uuid order_id FK
+        uuid product_id FK
+        int quantity
+        int price_at_order "snapshot of product price"
+    }
+
+    reviews {
+        uuid id PK
+        uuid product_id FK "nullable for general reviews"
+        uuid user_id FK "nullable for guest reviews"
+        varchar customer_name "display name, e.g., A*** K***"
+        int rating "1 to 5"
+        text comment
+        boolean is_approved "admin moderation status"
+        timestamp created_at
+    }
+
+    gallery_items {
+        uuid id PK
+        uuid product_id FK "nullable link to product detail"
+        varchar image_url
+        varchar caption
+        timestamp created_at
+    }
+
+    store_values {
+        uuid id PK
+        varchar title "e.g., Handmade, Aesthetic"
+        varchar icon_name "lucide icon string"
+        text content "detailed card message"
+        int order_index "display sorting order"
+        timestamp created_at
+    }
+
+    store_settings {
+        varchar key PK "e.g., whatsapp_number, store_address"
+        text value
+        timestamp updated_at
+    }
+
+    payments {
+        uuid id PK
+        uuid order_id FK
+        varchar transaction_id UK "gateway transaction reference"
+        varchar status "pending, capture, settlement, deny, expire, cancel"
+        int amount
+        varchar payment_type "credit_card, gopay, bank_transfer, etc"
+        text raw_payload "full callback JSON"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ai_chat_sessions {
+        uuid id PK
+        uuid user_id FK "nullable for guests"
+        varchar platform "web, whatsapp"
+        varchar external_session_id "phone number or browser session token"
+        varchar last_intent "context tracker"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ai_chat_messages {
+        uuid id PK
+        uuid session_id FK
+        varchar sender "user, assistant"
+        text message_text
+        timestamp created_at
+    }
+
+    social_posts {
+        uuid id PK
+        uuid gallery_item_id FK "nullable link to gallery image"
+        uuid product_id FK "nullable link to product"
+        varchar platform "instagram, tiktok"
+        varchar status "draft, generating, scheduled, posted, failed"
+        text ai_prompt "context prompt for AI generation"
+        text ai_generated_caption
+        varchar media_url "generated or processed media path"
+        timestamp scheduled_at "when to auto-post"
+        timestamp posted_at "actual post time"
+        varchar social_post_id "platform post reference"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    categories ||--o{ products : "contains"
+    products ||--o{ order_items : "included_in"
+    products ||--o{ reviews : "receives"
+    products ||--o{ gallery_items : "links_to"
+    users ||--o{ orders : "places"
+    users ||--o{ reviews : "writes"
+    orders ||--|{ order_items : "consists_of"
+    orders ||--o{ payments : "has"
+    users ||--o{ ai_chat_sessions : "starts"
+    ai_chat_sessions ||--|{ ai_chat_messages : "contains"
+    products ||--o{ social_posts : "advertised_by"
+    gallery_items ||--o{ social_posts : "shared_by"

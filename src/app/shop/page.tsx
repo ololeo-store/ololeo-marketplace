@@ -73,10 +73,10 @@ export default function Shop() {
                 onClick={() => document.getElementById('sortOptions')?.classList.toggle('hidden')}
                 className="w-full px-5 py-4 rounded-full border border-gray-200 bg-white hover:bg-gray-50 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium text-gray-700 flex justify-between items-center shadow-sm"
               >
-                <span>
-                  {sortOrder === 'default' && "Sort by Price"}
-                  {sortOrder === 'asc' && "Price: Low to High"}
-                  {sortOrder === 'desc' && "Price: High to Low"}
+                <span translate="no">
+                  {sortOrder === 'default' && <span key="default">Sort by Price</span>}
+                  {sortOrder === 'asc' && <span key="asc">Price: Low to High</span>}
+                  {sortOrder === 'desc' && <span key="desc">Price: High to Low</span>}
                 </span>
                 <SlidersHorizontal className="w-4 h-4 text-gray-400" />
               </button>

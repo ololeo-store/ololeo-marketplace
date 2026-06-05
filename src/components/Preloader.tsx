@@ -1,12 +1,9 @@
 "use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-
 export default function Preloader() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
     setIsMounted(true);
     // Only show once per session to not annoy the user
@@ -21,7 +18,6 @@ export default function Preloader() {
       return () => clearTimeout(timer);
     }
   }, []);
-
   useEffect(() => {
     if (isLoading) {
       document.body.style.overflow = "hidden";
@@ -29,9 +25,7 @@ export default function Preloader() {
       document.body.style.overflow = "unset";
     }
   }, [isLoading]);
-
   if (!isMounted) return null;
-
   return (
     <AnimatePresence>
       {isLoading && (
@@ -44,7 +38,6 @@ export default function Preloader() {
           {/* Aesthetic Blur Glow Background Effects */}
           <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[60vw] h-[60vw] bg-secondary/20 rounded-full blur-[120px] pointer-events-none" />
-
           {/* Bloom Animation Container */}
           <div className="relative flex flex-col items-center justify-center mb-8">
             {/* Center blooming circle */}
@@ -69,7 +62,6 @@ export default function Preloader() {
               className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-tl-full rounded-br-full shadow-lg shadow-primary/30 relative z-10"
             />
           </div>
-
           {/* Text Reveal */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -79,6 +71,7 @@ export default function Preloader() {
           >
             <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight mb-2">
               Ololeo Store <span className="inline-block">🌸</span>
+              Ololeo Bucket <span className="inline-block">🌸</span>
             </h1>
             <motion.p 
               initial={{ opacity: 0 }}

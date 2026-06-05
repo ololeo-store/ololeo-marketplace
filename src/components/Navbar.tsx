@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
@@ -7,14 +6,12 @@ import { useCart } from "@/store/useCart";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import CartDrawer from "@/components/CartDrawer";
-
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const totalItems = useCart((state) => state.totalItems());
   const [isCartOpen, setIsCartOpen] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -22,18 +19,15 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   // Close mobile menu when pathname changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
-
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
   ];
-
   return (
     <>
       <header
@@ -65,7 +59,6 @@ export default function Navbar() {
               </Link>
             ))}
           </nav>
-
           <div className="flex items-center gap-2 md:gap-4">
             <button 
               className="p-2.5 text-gray-800 hover:text-primary hover:bg-white/50 rounded-full transition-all relative"
@@ -86,7 +79,6 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
         {/* Mobile Nav Menu */}
         <div 
           className={cn(
