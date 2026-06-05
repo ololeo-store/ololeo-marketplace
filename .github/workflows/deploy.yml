@@ -43,10 +43,10 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: 43.134.117.194
+          host: 43.133.134.181
           username: ubuntu
-          password: "lh9bUplI(tr^-+X&"
+          password: "matrix-29#-thunder"
           port: 22
           script: |
-            cd ~/app/ololeo-bucket
-            bash redeploy-landing-page.sh
+            cd ~/app/nitaaa
+            bash ololeo-store.sh
