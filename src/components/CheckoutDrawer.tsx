@@ -1,4 +1,4 @@
-import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
@@ -24,20 +24,27 @@ export default function CheckoutDrawer({
   showAddMore = false
 }: CheckoutDrawerProps) {
   const [customerName, setCustomerName] = useState("");
+  const [customerWhatsapp, setCustomerWhatsapp] = useState("");
   const [pickupDate, setPickupDate] = useState<Date | null>(null);
   const [notes, setNotes] = useState("");
   const [nameError, setNameError] = useState(false);
+  const [whatsappError, setWhatsappError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const whatsappInputRef = useRef<HTMLInputElement>(null);
   const dateInputRef = useRef<HTMLButtonElement>(null);
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
-  // Clear error when typing
   useEffect(() => {
     if (customerName.trim() && nameError) {
       setNameError(false);
     }
   }, [customerName, nameError]);
+  useEffect(() => {
+    if (customerWhatsapp.trim() && whatsappError) {
+      setWhatsappError(false);
+    }
+  }, [customerWhatsapp, whatsappError]);
   useEffect(() => {
     if (pickupDate && dateError) {
       setDateError(false);
@@ -51,6 +58,14 @@ export default function CheckoutDrawer({
       setNameError(true);
       nameInputRef.current?.focus();
       nameInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      hasError = true;
+    }
+    if (!customerWhatsapp.trim()) {
+      setWhatsappError(true);
+      if (!hasError) {
+        whatsappInputRef.current?.focus();
+        whatsappInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       hasError = true;
     }
     if (!pickupDate) {
@@ -71,6 +86,7 @@ export default function CheckoutDrawer({
     message += `Saya ingin pesan bucket\n`;
     message += `────୨ৎ──── \n`;
     message += `*Atas Nama:* ${customerName}\n`;
+    message += `*WhatsApp:* ${customerWhatsapp}\n`;
     if (formattedDate) message += `*Tanggal Pengambilan:* ${formattedDate}\n`;
     if (notes) message += `*Notes:* ${notes}\n`;
     message += `────୨ৎ────\n`;
@@ -211,6 +227,29 @@ export default function CheckoutDrawer({
                         <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nama Anda</p>
                       )}
                     </div>
+
+                    <div className="relative">
+                      <Phone className={cn(
+                        "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors",
+                        whatsappError ? "text-red-400" : "text-primary/40"
+                      )} />
+                      <input 
+                        ref={whatsappInputRef}
+                        type="tel" 
+                        placeholder="Nomor WhatsApp (Wajib)"
+                        value={customerWhatsapp}
+                        onChange={(e) => setCustomerWhatsapp(e.target.value)}
+                        className={cn(
+                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 outline-none transition-all font-medium text-gray-700 shadow-sm",
+                          whatsappError 
+                            ? "border-red-400 focus:border-red-500 ring-4 ring-red-50" 
+                            : "border-pink-50 focus:border-primary/30"
+                        )}
+                      />
+                      {whatsappError && (
+                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nomor WhatsApp Anda</p>
+                      )}
+                    </div>
                     
                     <div className="relative">
                       <Calendar className={cn(
@@ -306,6 +345,15 @@ export default function CheckoutDrawer({
                           nameError ? "text-red-500" : "text-gray-900"
                         )}>
                           <span translate="no">{customerName || "-"}</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
+                        <span>WhatsApp:</span>
+                        <span className={cn(
+                          "font-bold transition-colors",
+                          whatsappError ? "text-red-500" : "text-gray-900"
+                        )}>
+                          <span translate="no">{customerWhatsapp || "-"}</span>
                         </span>
                       </div>
                       <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">

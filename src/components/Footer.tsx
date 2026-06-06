@@ -1,6 +1,15 @@
+"use client";
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/sapanyak')) {
+    return null;
+  }
+
   return (
     <footer className="bg-gradient-to-br from-indigo-50 to-primary/10 pt-16 pb-8 border-t border-primary/20">
       <div className="container mx-auto px-4 md:px-6">

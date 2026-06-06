@@ -1,11 +1,18 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+
 export default function Preloader() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
+
   useEffect(() => {
     setIsMounted(true);
+    if (pathname?.startsWith("/sapanyak")) {
+      return;
+    }
     // Only show once per session to not annoy the user
     const hasSeenPreloader = sessionStorage.getItem("hasSeenPreloader");
     if (!hasSeenPreloader) {
@@ -17,7 +24,7 @@ export default function Preloader() {
       }, 2200);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [pathname]);
   useEffect(() => {
     if (isLoading) {
       document.body.style.overflow = "hidden";
@@ -71,7 +78,6 @@ export default function Preloader() {
           >
             <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight mb-2">
               Ololeo Store <span className="inline-block">🌸</span>
-              Ololeo Bucket <span className="inline-block">🌸</span>
             </h1>
             <motion.p 
               initial={{ opacity: 0 }}

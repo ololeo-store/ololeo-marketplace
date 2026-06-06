@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-primary: #f9a8d4;
   --color-secondary: #a78bfa;
+  --font-sans: 'Noto Serif', serif;
 }
 
 @layer base {
@@ -39,3 +41,13 @@ body {
     scrollbar-width: none;
   }
 }
+
+@utility custom-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b5cf6' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-size: 1rem 1rem;
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem !important;
+}
+

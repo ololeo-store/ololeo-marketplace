@@ -10,6 +10,10 @@ export default function WhatsAppButton() {
   const pathname = usePathname();
   const isProductPage = pathname?.startsWith("/product/");
 
+  if (pathname?.startsWith("/sapanyak")) {
+    return null;
+  }
+
   return (
     <motion.a
       href={whatsappUrl}

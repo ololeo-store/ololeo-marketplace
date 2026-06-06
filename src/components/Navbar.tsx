@@ -12,6 +12,10 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const totalItems = useCart((state) => state.totalItems());
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  if (pathname?.startsWith("/sapanyak")) {
+    return null;
+  }
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
