@@ -4,7 +4,7 @@ import AboutSection from "@/components/AboutSection";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen pt-24">
+    <main className="min-h-screen pt-8">
       <IntroSection />
       <ValuesSection />
       <AboutSection />

@@ -3,21 +3,45 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Product } from "@/store/useCart";
+import { Product, useCart } from "@/store/useCart";
+import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const addItem = useCart((state) => state.addItem);
+  const setIsOpen = useCart((state) => state.setIsOpen);
+  const [justAdded, setJustAdded] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1200);
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    setIsOpen(true);
+  };
+
   return (
     <motion.div
-      whileHover={{ scale: 1.03, y: -5 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      whileHover={{ y: -4 }}
+      className="group w-full flex flex-col"
     >
-      <Link href={`/product/${product.id}`}>
-        <div className="relative aspect-[4/5] overflow-hidden w-full">
+      <Link href={`/product/${product.id}`} className="flex flex-col w-full">
+        {/* Foto Kotak (Square Image) */}
+        <div className="relative aspect-square overflow-hidden w-full bg-gray-50 rounded-2xl border border-gray-100/50">
           <Image
             src={product.image}
             alt={product.name}
@@ -25,19 +49,53 @@ export default function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/80 backdrop-blur-md px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-semibold text-secondary">
-            {product.category}
-          </div>
+          {/* Category badge */}
+          {product.category && (
+            <div className="absolute top-2.5 left-2.5 md:top-3 md:left-3">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-bold bg-white/90 backdrop-blur-sm text-purple-500 shadow-sm">
+                {product.category}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="p-3 md:p-5">
-          <h3 className="text-sm md:text-lg font-bold text-gray-800 line-clamp-1 group-hover:text-primary transition-colors">
+
+        {/* Text info below image */}
+        <div className="pt-3 pb-2 flex-grow">
+          <h3 className="text-sm md:text-base font-bold text-gray-800 line-clamp-1 group-hover:text-pink-500 transition-colors">
             {product.name}
           </h3>
-          <p className="mt-1 md:mt-2 text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+          <p className="mt-1 text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
             <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
           </p>
         </div>
       </Link>
+
+      {/* Two side-by-side buttons */}
+      <div className="flex gap-2 mt-1">
+        <button
+          onClick={handleAddToCart}
+          className={`flex-1 py-2 px-2 text-xs md:text-sm font-semibold rounded-xl border-2 transition-all flex items-center justify-center gap-1.5 ${
+            justAdded
+              ? "bg-green-500 border-green-500 text-white"
+              : "bg-white border-pink-200 text-pink-500 hover:bg-pink-50"
+          }`}
+        >
+          {justAdded ? (
+            "Ditambahkan"
+          ) : (
+            <>
+              <ShoppingCart className="w-3.5 h-3.5" />
+              Add to Cart
+            </>
+          )}
+        </button>
+        <button
+          onClick={handleBuyNow}
+          className="flex-1 py-2 px-2 text-xs md:text-sm font-bold text-white bg-gradient-to-r from-pink-400 to-purple-400 rounded-xl hover:shadow-md hover:shadow-pink-200/50 transition-all text-center"
+        >
+          Buy Now
+        </button>
+      </div>
     </motion.div>
   );
 }

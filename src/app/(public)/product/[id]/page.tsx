@@ -2,23 +2,56 @@
 
 import { use } from "react";
 import Image from "next/image";
-import { products } from "@/data/products";
+import { products as staticProducts } from "@/data/products";
 import { notFound } from "next/navigation";
-import { useCart } from "@/store/useCart";
+import { useCart, Product } from "@/store/useCart";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, ArrowLeft, Heart, Minus, Plus } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { api } from "@/lib/api";
 
 import CheckoutDrawer from "@/components/CheckoutDrawer";
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
-  const product = products.find((p) => p.id === unwrappedParams.id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        setIsLoading(true);
+        const res = await api.getProduct(unwrappedParams.id);
+        if (res) {
+          const firstImage = res.galleries?.[0]?.imageUrl;
+          setProduct({
+            id: res.id,
+            name: res.name,
+            price: typeof res.price === "string" ? parseFloat(res.price) : res.price,
+            image: firstImage || "/placeholder.svg",
+            category: res.category?.name || "Uncategorized",
+            description: res.description || "",
+          });
+        } else {
+          // Fallback to static
+          const staticP = staticProducts.find((p) => p.id === unwrappedParams.id);
+          setProduct(staticP || null);
+        }
+      } catch (err) {
+        // Fallback to static
+        const staticP = staticProducts.find((p) => p.id === unwrappedParams.id);
+        setProduct(staticP || null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadProduct();
+  }, [unwrappedParams.id]);
 
   // Mobile layout state variables
   const colors = ["#d6bcfd", "#7dd3fc", "#f472b6", "#fed7aa"]; // Purple, Blue, Pink, Apricot
@@ -69,6 +102,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     }, 850);
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500"></div>
+      </div>
+    );
+  }
+
   if (!product) {
     notFound();
   }
@@ -90,7 +131,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   };
 
   return (
-    <main className="min-h-screen pt-0 md:pt-32 pb-0 md:pb-24 bg-white relative overflow-hidden">
+    <main className="min-h-screen pt-0 md:pt-8 pb-0 md:pb-24 bg-white relative overflow-hidden">
       {/* Checkout Drawer for Direct Buy */}
       <CheckoutDrawer
         isOpen={isCheckoutOpen}

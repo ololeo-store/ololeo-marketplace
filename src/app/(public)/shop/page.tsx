@@ -1,134 +1,332 @@
 "use client";
 
-import { useState } from "react";
-import { products } from "@/data/products";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { products as staticProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
-import { motion } from "framer-motion";
-import { Search, SlidersHorizontal } from "lucide-react";
-
-const categories = ["All", "Romantic", "Graduation", "Birthday", "Valentine", "Custom"];
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, SlidersHorizontal, Loader2, ChevronDown } from "lucide-react";
+import { api, ApiProduct, ApiProductCategory } from "@/lib/api";
+import { Product } from "@/store/useCart";
 
 export default function Shop() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [useApi, setUseApi] = useState(true);
 
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = activeCategory === "All" || product.category === activeCategory;
-      return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortOrder === "asc") return a.price - b.price;
-      if (sortOrder === "desc") return b.price - a.price;
-      return 0;
-    });
+  // Map API product to local Product interface
+  const mapApiProduct = useCallback((p: ApiProduct): Product => {
+    const firstImage = p.galleries?.[0]?.imageUrl;
+    return {
+      id: p.id,
+      name: p.name,
+      price: typeof p.price === "string" ? parseFloat(p.price) : p.price,
+      image: firstImage || "/placeholder.svg",
+      category: p.category?.name || "Uncategorized",
+      description: p.description || "",
+    };
+  }, []);
+
+  // Fetch products and categories from API
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+        const [productsRes, categoriesRes] = await Promise.all([
+          api.getProducts({ limit: 100 }),
+          api.getCategories(),
+        ]);
+
+        // Handle products - could be paginated or array
+        let apiProducts: ApiProduct[] = [];
+        if (Array.isArray(productsRes)) {
+          apiProducts = productsRes;
+        } else if (productsRes && 'data' in productsRes) {
+          apiProducts = (productsRes as any).data || productsRes as any;
+        } else {
+          apiProducts = productsRes as any;
+        }
+
+        // Handle categories
+        let cats: string[] = ["All"];
+        if (Array.isArray(categoriesRes)) {
+          cats = ["All", ...categoriesRes.map((c: ApiProductCategory) => c.name)];
+        }
+
+        if (apiProducts.length > 0) {
+          setProducts(apiProducts.map(mapApiProduct));
+          setCategories(cats);
+          setUseApi(true);
+        } else {
+          // Fallback to static data
+          setProducts(staticProducts);
+          const uniqueCategories = ["All", ...new Set(staticProducts.map(p => p.category))];
+          setCategories(uniqueCategories);
+          setUseApi(false);
+        }
+      } catch {
+        // Fallback to static data on API error
+        setProducts(staticProducts);
+        const uniqueCategories = ["All", ...new Set(staticProducts.map(p => p.category))];
+        setCategories(uniqueCategories);
+        setUseApi(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, [mapApiProduct]);
+
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter((product) => {
+        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (sortOrder === "asc") return a.price - b.price;
+        if (sortOrder === "desc") return b.price - a.price;
+        return 0;
+      });
+  }, [products, searchQuery, activeCategory, sortOrder]);
+
+  // Get recommendations (e.g. 4 random or top products from all products list)
+  const recommendations = useMemo(() => {
+    if (products.length === 0) return [];
+    // Just select up to 4 items from the products list
+    return products.slice(0, 4);
+  }, [products]);
+
+  // Close sort dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-sort-dropdown]")) {
+        setShowSortDropdown(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   return (
-    <main className="min-h-screen pt-32 pb-24 bg-gray-50/50">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Collections</span>
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-            Find the perfect flower bucket for your special moments. Beautifully handcrafted with love.
-          </p>
+    <main className="min-h-screen pt-6 pb-24 bg-gradient-to-b from-pink-50/30 to-white">
+      <div className="container mx-auto px-4 md:px-8 lg:px-12">
+        {/* Header */}
+        <div className="text-center mb-10 md:mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block px-4 py-1.5 rounded-full bg-pink-50 text-pink-500 text-xs font-bold uppercase tracking-wider mb-4">
+              ✨ Our Collections
+            </span>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+              Temukan Buket{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
+                Impianmu
+              </span>
+            </h1>
+            <p className="text-gray-500 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+              Handcrafted with love untuk setiap momen spesialmu 🌸
+            </p>
+          </motion.div>
         </div>
 
-        <div className="bg-white rounded-[2rem] p-4 md:p-6 shadow-xl shadow-primary/5 mb-16 border border-primary/10 flex flex-col lg:flex-row justify-between items-center gap-6">
-          <div className="flex gap-4 overflow-x-auto w-full lg:w-[460px] pb-4 lg:pb-2 scrollbar-hide snap-x snap-mandatory scroll-smooth">
+        {/* Large Wrapper Card */}
+        <div className="bg-white rounded-3xl p-6 md:p-10 border border-gray-100 shadow-sm shadow-pink-100/10">
+          {/* Search & Filter Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mb-8 md:mb-10"
+        >
+          {/* Search + Sort Row */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-5">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Cari buket kesukaanmu..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:bg-white focus:outline-none focus:border-pink-300 focus:ring-2 focus:ring-pink-100 transition-all text-sm font-medium"
+              />
+            </div>
+            <div className="relative w-full sm:w-48" data-sort-dropdown>
+              <button
+                onClick={() => setShowSortDropdown(!showSortDropdown)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-pink-200 transition-all text-sm font-medium text-gray-600 flex justify-between items-center"
+              >
+                <span className="flex items-center gap-2">
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  {sortOrder === "default" && "Urutkan"}
+                  {sortOrder === "asc" && "Termurah"}
+                  {sortOrder === "desc" && "Termahal"}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showSortDropdown ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {showSortDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden py-1"
+                  >
+                    {[
+                      { value: "default", label: "Default" },
+                      { value: "asc", label: "Harga: Termurah" },
+                      { value: "desc", label: "Harga: Termahal" },
+                    ].map((opt) => (
+                      <button
+                        key={opt.value}
+                        onClick={() => {
+                          setSortOrder(opt.value);
+                          setShowSortDropdown(false);
+                        }}
+                        className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                          sortOrder === opt.value
+                            ? "text-pink-500 font-semibold bg-pink-50"
+                            : "text-gray-600 hover:bg-gray-50"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Mobile Category Pills (hidden on desktop) */}
+          <div className="flex md:hidden gap-2 overflow-x-auto pb-1 scrollbar-hide snap-x snap-mandatory">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`flex-shrink-0 px-8 py-3.5 rounded-full whitespace-nowrap font-bold transition-all duration-500 snap-start flex items-center justify-center min-w-[140px] ${
+                className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 snap-start ${
                   activeCategory === category
-                    ? "bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 text-white shadow-xl shadow-primary/25 scale-105 ring-4 ring-primary/10"
-                    : "bg-gray-50 text-gray-500 hover:text-primary hover:bg-white border border-gray-100 hover:border-primary/30 hover:shadow-md"
+                    ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md shadow-pink-200/50"
+                    : "bg-white text-gray-500 border border-gray-200 hover:border-pink-200 hover:text-pink-500"
                 }`}
               >
                 {category}
               </button>
             ))}
           </div>
+        </motion.div>
 
-          <div className="flex flex-col sm:flex-row w-full lg:w-auto gap-4">
-            <div className="relative w-full sm:w-64">
-              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+        {/* Main Content Layout: Sidebar + Grid */}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Left Sidebar - Categories (Desktop Only) */}
+          <aside className="hidden md:block w-48 flex-shrink-0">
+            <div className="sticky top-24 py-2">
+              <h2 className="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-4 px-3">
+                Kategori
+              </h2>
+              <div className="flex flex-col gap-1">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setActiveCategory(category)}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                      activeCategory === category
+                        ? "text-pink-500 bg-pink-50/60 font-black"
+                        : "text-gray-600 hover:text-pink-500 hover:bg-pink-50/20"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
               </div>
-              <input
-                type="text"
-                placeholder="Search lovely flowers..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-5 py-4 rounded-full border-2 border-transparent bg-gray-50 focus:bg-white focus:outline-none focus:border-primary/30 focus:ring-4 focus:ring-primary/10 transition-all font-medium"
-              />
             </div>
-            
-            <div className="relative w-full sm:w-56">
-              <button 
-                onClick={() => document.getElementById('sortOptions')?.classList.toggle('hidden')}
-                className="w-full px-5 py-4 rounded-full border border-gray-200 bg-white hover:bg-gray-50 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium text-gray-700 flex justify-between items-center shadow-sm"
+          </aside>
+
+          {/* Right Content - Grid of Products */}
+          <div className="flex-grow">
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-24">
+                <Loader2 className="w-8 h-8 text-pink-400 animate-spin mb-4" />
+                <p className="text-sm text-gray-400 font-medium">Memuat produk...</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              /* Empty State */
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-20 bg-white rounded-2xl border border-gray-100"
               >
-                <span translate="no">
-                  {sortOrder === 'default' && <span key="default">Sort by Price</span>}
-                  {sortOrder === 'asc' && <span key="asc">Price: Low to High</span>}
-                  {sortOrder === 'desc' && <span key="desc">Price: High to Low</span>}
-                </span>
-                <SlidersHorizontal className="w-4 h-4 text-gray-400" />
-              </button>
-              
-              <div id="sortOptions" className="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl z-10 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2">
-                <button 
-                  onClick={() => { setSortOrder('default'); document.getElementById('sortOptions')?.classList.add('hidden'); }}
-                  className={`w-full text-left px-5 py-3 hover:bg-primary/5 transition-colors ${sortOrder === 'default' ? 'text-primary font-semibold bg-primary/5' : 'text-gray-700'}`}
+                <div className="text-5xl mb-4">🌸</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Tidak ada produk ditemukan
+                </h3>
+                <p className="text-gray-400 text-sm mb-6">
+                  Coba ubah filter atau kata kunci pencarian kamu
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveCategory("All");
+                  }}
+                  className="px-6 py-2.5 rounded-full border-2 border-pink-300 text-pink-500 hover:bg-pink-50 font-semibold text-sm transition-colors"
                 >
-                  Default
+                  Reset Filter
                 </button>
-                <button 
-                  onClick={() => { setSortOrder('asc'); document.getElementById('sortOptions')?.classList.add('hidden'); }}
-                  className={`w-full text-left px-5 py-3 hover:bg-primary/5 transition-colors ${sortOrder === 'asc' ? 'text-primary font-semibold bg-primary/5' : 'text-gray-700'}`}
-                >
-                  Price: Low to High
-                </button>
-                <button 
-                  onClick={() => { setSortOrder('desc'); document.getElementById('sortOptions')?.classList.add('hidden'); }}
-                  className={`w-full text-left px-5 py-3 hover:bg-primary/5 transition-colors ${sortOrder === 'desc' ? 'text-primary font-semibold bg-primary/5' : 'text-gray-700'}`}
-                >
-                  Price: High to Low
-                </button>
-              </div>
-            </div>
+              </motion.div>
+            ) : (
+              /* Product Grid (4 Buckets per row on desktop) */
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
+              >
+                {filteredProducts.map((product, i) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(i * 0.05, 0.5) }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+
+            {/* Results count */}
+            {!isLoading && filteredProducts.length > 0 && (
+              <p className="text-center md:text-left text-xs text-gray-400 mt-8 font-medium">
+                Menampilkan {filteredProducts.length} produk
+                {!useApi && " (offline mode)"}
+              </p>
+            )}
           </div>
         </div>
 
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-[3rem] shadow-sm border border-gray-100">
-            <div className="text-6xl mb-6">🌸</div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">No flowers found</h3>
-            <p className="text-gray-500 text-lg mb-6">Try adjusting your filters or search terms.</p>
-            <button 
-              onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-              className="mt-4 px-8 py-3 rounded-full border-2 border-primary text-primary hover:bg-primary/5 font-semibold transition-colors"
-            >
-              Clear filters
-            </button>
-          </div>
-        ) : (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </motion.div>
+        {/* Recommendation Section Below */}
+        {!isLoading && recommendations.length > 0 && (
+          <section className="mt-20 pt-12 border-t border-gray-100">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-8 flex items-center gap-2">
+              <span>✨</span> Rekomendasi Untukmu
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              {recommendations.map((product) => (
+                <ProductCard key={`rec-${product.id}`} product={product} />
+              ))}
+            </div>
+          </section>
         )}
+        </div>
       </div>
     </main>
   );
