@@ -7,6 +7,7 @@ import { useAuth } from "@/store/useAuth";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import CartDrawer from "@/components/CartDrawer";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -39,7 +40,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <header className="sticky top-0 z-50 w-full bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-gray-100 dark:border-border shadow-sm">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between h-16 md:h-[68px]">
             {/* Logo */}
@@ -59,8 +60,8 @@ export default function Navbar() {
                   className={cn(
                     "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200",
                     pathname === link.href
-                      ? "text-primary bg-pink-50"
-                      : "text-gray-600 hover:text-primary hover:bg-pink-50/50"
+                      ? "text-primary bg-pink-50 dark:bg-primary/10"
+                      : "text-gray-600 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/50 dark:hover:bg-primary/10"
                   )}
                 >
                   {link.name}
@@ -68,11 +69,13 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* Right side: Cart + Auth */}
+            {/* Right side: Cart + Auth + Theme */}
             <div className="flex items-center gap-2 md:gap-3">
+              <ThemeToggle />
+
               {/* Cart */}
               <button
-                className="relative p-2 text-gray-600 hover:text-primary hover:bg-pink-50 rounded-lg transition-all"
+                className="relative p-2 text-gray-600 dark:text-muted-foreground hover:text-primary hover:bg-pink-50 dark:hover:bg-primary/10 rounded-lg transition-all"
                 onClick={() => setIsCartOpen(true)}
               >
                 <ShoppingBag className="w-5 h-5" />
