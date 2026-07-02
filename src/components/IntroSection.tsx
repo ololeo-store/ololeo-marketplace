@@ -33,9 +33,6 @@ export default function IntroSection() {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="flex-1 w-full text-center lg:text-left"
           >
-            <span className="inline-block py-1.5 px-4 rounded-full bg-primary/10 text-primary font-bold text-sm tracking-wider uppercase mb-4">
-              Introduction Our Store
-            </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Menghadirkan Kebahagiaan dalam Setiap <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Rangkaian Bunga.</span>
             </h2>

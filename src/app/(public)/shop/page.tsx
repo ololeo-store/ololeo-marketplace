@@ -124,9 +124,6 @@ export default function Shop() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-pink-50 text-pink-500 text-xs font-bold uppercase tracking-wider mb-4">
-              ✨ Our Collections
-            </span>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
               Temukan Buket{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
@@ -288,7 +285,7 @@ export default function Shop() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
               >
                 {filteredProducts.map((product, i) => (
                   <motion.div

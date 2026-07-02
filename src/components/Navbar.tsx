@@ -11,13 +11,16 @@ import CartDrawer from "@/components/CartDrawer";
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const totalItems = useCart((state) => state.totalItems());
   const { isOpen: isCartOpen, setIsOpen: setIsCartOpen } = useCart();
   const { customer, logout, hydrate, isLoading } = useAuth();
 
   useEffect(() => {
+    setMounted(true);
     hydrate();
   }, [hydrate]);
+
 
   if (pathname?.startsWith("/sapanyak")) {
     return null;
@@ -73,7 +76,7 @@ export default function Navbar() {
                 onClick={() => setIsCartOpen(true)}
               >
                 <ShoppingBag className="w-5 h-5" />
-                {totalItems > 0 && (
+                {mounted && totalItems > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center w-[18px] h-[18px] text-[10px] font-bold text-white bg-gradient-to-r from-pink-400 to-purple-400 rounded-full">
                     {totalItems}
                   </span>

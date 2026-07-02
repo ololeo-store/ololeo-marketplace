@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Product, useCart } from "@/store/useCart";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
 
 interface ProductCardProps {
@@ -71,27 +71,21 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Two side-by-side buttons */}
-      <div className="flex gap-2 mt-1">
+      <div className="hidden md:flex gap-2 mt-1">
         <button
           onClick={handleAddToCart}
           className={`flex-1 py-2 px-2 text-xs md:text-sm font-semibold rounded-xl border-2 transition-all flex items-center justify-center gap-1.5 ${
             justAdded
-              ? "bg-green-500 border-green-500 text-white"
-              : "bg-white border-pink-200 text-pink-500 hover:bg-pink-50"
+              ? "bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-[0_4px_12px_rgba(167,139,250,0.3)] animate-pulse"
+              : "bg-white border-gray-200 text-gray-800 hover:border-primary/50 hover:bg-primary/5"
           }`}
         >
-          {justAdded ? (
-            "Ditambahkan"
-          ) : (
-            <>
-              <ShoppingCart className="w-3.5 h-3.5" />
-              Add to Cart
-            </>
-          )}
+          <ShoppingBag className="w-3.5 h-3.5" />
+          {justAdded ? "Added!" : "Add to Cart"}
         </button>
         <button
           onClick={handleBuyNow}
-          className="flex-1 py-2 px-2 text-xs md:text-sm font-bold text-white bg-gradient-to-r from-pink-400 to-purple-400 rounded-xl hover:shadow-md hover:shadow-pink-200/50 transition-all text-center"
+          className="flex-1 py-2 px-2 text-xs md:text-sm font-bold text-white bg-gradient-to-r from-primary to-secondary rounded-xl hover:shadow-md hover:shadow-primary/30 transition-all text-center"
         >
           Buy Now
         </button>

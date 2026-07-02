@@ -66,7 +66,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 leading-tight mb-8">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 leading-tight mb-8">
               Send <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Happiness</span> <br/>
               in Every Bloom
             </h1>

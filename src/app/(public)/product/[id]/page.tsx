@@ -185,7 +185,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
 
       {/* Desktop View */}
-      <div className="hidden md:block container mx-auto px-4 md:px-6 relative z-10">
+      <div className="hidden md:block container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
         <Link
           href="/shop"
           className="inline-flex items-center gap-2 text-gray-500 hover:text-primary transition-colors mb-10 font-medium"
@@ -269,7 +269,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       {/* Mobile View */}
       <div className="block md:hidden relative z-10 min-h-screen">
         {/* Soft Background Gradient Container */}
-        <div className="bg-gradient-to-b from-secondary/15 via-primary/10 to-transparent pt-6 pb-8 px-6 flex flex-col items-center">
+        <div className="bg-gradient-to-b from-secondary/15 via-primary/10 to-transparent pt-6 pb-8 px-4 flex flex-col items-center">
           {/* Header */}
           <div className="w-full flex items-center justify-between mb-4">
             <Link
@@ -301,7 +301,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Details Glass Card */}
-        <div className="w-full bg-white/70 backdrop-blur-xl border-t border-x border-white/40 rounded-t-[2.5rem] px-6 pt-8 pb-32 shadow-[0_-10px_30px_rgba(0,0,0,0.04)] relative -mt-4 flex flex-col gap-6">
+        <div className="w-full bg-white/70 backdrop-blur-xl border-t border-x border-white/40 rounded-t-[2.5rem] px-4 pt-8 pb-32 shadow-[0_-10px_30px_rgba(0,0,0,0.04)] relative -mt-4 flex flex-col gap-6">
           {/* Title & Stepper Row */}
           <div className="flex justify-between items-center gap-4">
             <div className="flex-grow">
@@ -353,7 +353,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Sticky Action Bar */}
-        <div className="fixed bottom-0 left-0 right-0 z-30 bg-transparent px-6 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,16px))] flex gap-4 pointer-events-none">
+        <div className="fixed bottom-0 left-0 right-0 z-30 bg-transparent px-4 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,16px))] flex gap-4 pointer-events-none">
           <button
             onClick={handleAddToCart}
             className={`flex-1 py-4 rounded-3xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 border-2 pointer-events-auto shadow-lg shadow-gray-200/50 ${isAdded

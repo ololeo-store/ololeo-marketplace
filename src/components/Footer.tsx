@@ -17,7 +17,6 @@ export default function Footer() {
           <div>
             <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 inline-block">
               Ololeo Store
-              Ololeo Bucket
             </Link>
             <p className="text-gray-600 max-w-sm mt-2">
               Send Happiness in Every Bloom. We provide the most beautiful handcrafted flower buckets for your special moments.

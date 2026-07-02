@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.ololeo-store.com';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.ololeo-store.com/api';
 
 interface FetchOptions extends RequestInit {
   token?: string;
