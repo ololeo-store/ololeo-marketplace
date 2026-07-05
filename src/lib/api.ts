@@ -57,10 +57,20 @@ export interface ApiProduct {
   slug: string;
   description?: string;
   price: string | number;
+  discountPrice?: string | number | null;
   isActive: boolean;
   category: ApiProductCategory;
   galleries: ApiProductGallery[];
   createdAt: string;
+}
+
+// ─── Discount Types ─────────────────────────────────────
+
+export interface ApiActiveDiscount {
+  code: string;
+  name: string;
+  type: "PERCENTAGE" | "FIXED";
+  value: number;
 }
 
 export interface PaginatedResponse<T> {
@@ -130,5 +140,10 @@ export const api = {
 
   getMe: (token: string) => {
     return apiFetch<CustomerProfile>('/public/auth/me', { token });
+  },
+
+  // Discounts
+  getActiveDiscount: () => {
+    return apiFetch<ApiActiveDiscount | null>('/public/discounts/active');
   },
 };

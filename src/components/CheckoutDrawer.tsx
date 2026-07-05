@@ -1,10 +1,11 @@
-import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight, Phone } from "lucide-react";
+import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight, Phone, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { CartItem } from "@/store/useCart";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { api, ApiActiveDiscount } from "@/lib/api";
 interface CheckoutDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,6 +28,8 @@ export default function CheckoutDrawer({
   const [customerWhatsapp, setCustomerWhatsapp] = useState("");
   const [pickupDate, setPickupDate] = useState<Date | null>(null);
   const [notes, setNotes] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const [activeDiscount, setActiveDiscount] = useState<ApiActiveDiscount | null>(null);
   const [nameError, setNameError] = useState(false);
   const [whatsappError, setWhatsappError] = useState(false);
   const [dateError, setDateError] = useState(false);
@@ -34,7 +37,33 @@ export default function CheckoutDrawer({
   const nameInputRef = useRef<HTMLInputElement>(null);
   const whatsappInputRef = useRef<HTMLInputElement>(null);
   const dateInputRef = useRef<HTMLButtonElement>(null);
-  const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  // Auto-fill the promo code with whatever discount is currently live, if any
+  useEffect(() => {
+    if (!isOpen) return;
+    api.getActiveDiscount().then((discount) => {
+      setActiveDiscount(discount);
+      if (discount && !promoCode) setPromoCode(discount.code);
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  const appliedDiscount =
+    activeDiscount && promoCode.trim().toUpperCase() === activeDiscount.code.toUpperCase()
+      ? activeDiscount
+      : null;
+
+  const discountAmount = appliedDiscount
+    ? Math.min(
+        subtotalPrice,
+        appliedDiscount.type === "PERCENTAGE"
+          ? (subtotalPrice * appliedDiscount.value) / 100
+          : appliedDiscount.value
+      )
+    : 0;
+
+  const totalPrice = Math.max(0, subtotalPrice - discountAmount);
   useEffect(() => {
     if (customerName.trim() && nameError) {
       setNameError(false);
@@ -95,6 +124,9 @@ export default function CheckoutDrawer({
       message += `- ${item.name} (x${item.quantity})\n`;
       message += `  Rp ${(item.price * item.quantity).toLocaleString("id-ID")}\n`;
     });
+    if (appliedDiscount) {
+      message += `\n*Kode Promo:* ${appliedDiscount.code} (-Rp ${discountAmount.toLocaleString("id-ID")})\n`;
+    }
     message += `\n*╰┈➤ˎˊ˗ Total : Rp ${totalPrice.toLocaleString("id-ID")}*\n\nApakah pesanan ini masih tersedia?`;
     
     const encodedMessage = encodeURIComponent(message);
@@ -319,6 +351,21 @@ export default function CheckoutDrawer({
                         className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 border-pink-50 dark:border-primary/20 focus:border-primary/30 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                       />
                     </div>
+                    <div className="relative">
+                      <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
+                      <input
+                        type="text"
+                        placeholder="Kode promo (opsional)"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 border-pink-50 dark:border-primary/20 focus:border-primary/30 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm uppercase"
+                      />
+                      {appliedDiscount && (
+                        <p className="text-emerald-600 dark:text-emerald-400 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">
+                          Kode "{appliedDiscount.code}" diterapkan
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -379,6 +426,12 @@ export default function CheckoutDrawer({
                         <div className="pt-4 border-t border-dashed border-gray-100 dark:border-border">
                           <span className="text-xs text-gray-400 dark:text-muted-foreground block mb-1">Catatan:</span>
                           <p className="text-gray-800 dark:text-foreground text-xs italic bg-gray-50 dark:bg-muted p-3 rounded-xl border border-gray-100 dark:border-border">"{notes}"</p>
+                        </div>
+                      )}
+                      {appliedDiscount && (
+                        <div className="flex justify-between pt-4 border-t border-dashed border-gray-100 dark:border-border text-rose-500 dark:text-rose-400 font-semibold">
+                          <span>Diskon ({appliedDiscount.code})</span>
+                          <span translate="no">-Rp {discountAmount.toLocaleString("id-ID")}</span>
                         </div>
                       )}
                       <div className="pt-6 mt-6 border-t-2 border-gray-100 dark:border-border flex justify-between items-center">

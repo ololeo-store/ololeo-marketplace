@@ -16,10 +16,19 @@ export default function ProductCard({ product }: ProductCardProps) {
   const setIsOpen = useCart((state) => state.setIsOpen);
   const [justAdded, setJustAdded] = useState(false);
 
+  const hasDiscount =
+    typeof product.discountPrice === "number" && product.discountPrice > 0 && product.discountPrice < product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.price - product.discountPrice!) / product.price) * 100)
+    : 0;
+
+  // Cart charges the discounted price when one is active, not the struck-out original
+  const cartProduct = hasDiscount ? { ...product, price: product.discountPrice! } : product;
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addItem(product);
+    addItem(cartProduct);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1200);
   };
@@ -27,7 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addItem(product);
+    addItem(cartProduct);
     setIsOpen(true);
   };
 
@@ -57,6 +66,14 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             </div>
           )}
+          {/* Discount badge */}
+          {hasDiscount && (
+            <div className="absolute top-2.5 right-2.5 md:top-3 md:right-3">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] md:text-[11px] font-extrabold bg-rose-500 text-white shadow-sm">
+                -{discountPercent}%
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Text info below image */}
@@ -64,9 +81,20 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-sm md:text-base font-bold text-gray-800 dark:text-foreground line-clamp-1 group-hover:text-pink-500 dark:hover:text-primary dark:group-hover:text-primary transition-colors">
             {product.name}
           </h3>
-          <p className="mt-1 text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">
-            <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
-          </p>
+          {hasDiscount ? (
+            <div className="mt-1 flex items-center gap-2 flex-wrap">
+              <span className="text-xs md:text-sm font-semibold text-gray-400 dark:text-muted-foreground line-through">
+                <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
+              </span>
+              <p className="text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">
+                <span translate="no">Rp {product.discountPrice!.toLocaleString("id-ID")}</span>
+              </p>
+            </div>
+          ) : (
+            <p className="mt-1 text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">
+              <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
+            </p>
+          )}
         </div>
       </Link>
 
