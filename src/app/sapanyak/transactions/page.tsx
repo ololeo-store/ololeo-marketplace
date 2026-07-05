@@ -188,13 +188,13 @@ export default function TransactionsPage() {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-5 sm:p-6 rounded-3xl border border-gray-200/60 shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
+          className="bg-white dark:bg-card p-5 sm:p-6 rounded-3xl border border-gray-200/60 dark:border-border shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
         >
           <div className="space-y-1 min-w-0 flex-1">
-            <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Total Pemasukan</span>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-emerald-600 truncate">{formatRupiah(summary.totalIncome)}</h3>
+            <span className="text-gray-400 dark:text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Total Pemasukan</span>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 truncate">{formatRupiah(summary.totalIncome)}</h3>
           </div>
-          <span className="p-3 sm:p-3.5 rounded-2xl bg-emerald-50 text-emerald-600 shrink-0">
+          <span className="p-3 sm:p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
             <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </span>
         </motion.div>
@@ -203,13 +203,13 @@ export default function TransactionsPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="bg-white p-5 sm:p-6 rounded-3xl border border-gray-200/60 shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
+          className="bg-white dark:bg-card p-5 sm:p-6 rounded-3xl border border-gray-200/60 dark:border-border shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
         >
           <div className="space-y-1 min-w-0 flex-1">
-            <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Total Pengeluaran</span>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-rose-600 truncate">{formatRupiah(summary.totalExpense)}</h3>
+            <span className="text-gray-400 dark:text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Total Pengeluaran</span>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-rose-600 dark:text-rose-400 truncate">{formatRupiah(summary.totalExpense)}</h3>
           </div>
-          <span className="p-3 sm:p-3.5 rounded-2xl bg-rose-50 text-rose-600 shrink-0">
+          <span className="p-3 sm:p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 shrink-0">
             <TrendingDown className="w-5 h-5 sm:w-6 sm:h-6" />
           </span>
         </motion.div>
@@ -218,26 +218,26 @@ export default function TransactionsPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white p-5 sm:p-6 rounded-3xl border border-gray-200/60 shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
+          className="bg-white dark:bg-card p-5 sm:p-6 rounded-3xl border border-gray-200/60 dark:border-border shadow-sm flex items-center justify-between gap-4 w-full min-w-0"
         >
           <div className="space-y-1 min-w-0 flex-1">
-            <span className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Saldo Bersih</span>
-            <h3 className={`text-xl sm:text-2xl font-extrabold truncate ${summary.balance >= 0 ? "text-primary" : "text-rose-600"}`}>
+            <span className="text-gray-400 dark:text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider block truncate">Saldo Bersih</span>
+            <h3 className={`text-xl sm:text-2xl font-extrabold truncate ${summary.balance >= 0 ? "text-primary" : "text-rose-600 dark:text-rose-400"}`}>
               {formatRupiah(summary.balance)}
             </h3>
           </div>
-          <span className="p-3 sm:p-3.5 rounded-2xl bg-indigo-50 text-primary shrink-0">
+          <span className="p-3 sm:p-3.5 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-primary shrink-0">
             <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />
           </span>
         </motion.div>
       </div>
 
       {/* Main Table and Filter Wrapper */}
-      <div className="bg-white rounded-3xl border border-gray-200/60 shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
+      <div className="bg-white dark:bg-card rounded-3xl border border-gray-200/60 dark:border-border shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h3 className="text-lg font-bold text-gray-800">Catatan Transaksi Keuangan</h3>
-            <p className="text-gray-400 text-xs mt-0.5">Kelola data pemasukan dan pengeluaran operasional toko</p>
+            <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Catatan Transaksi Keuangan</h3>
+            <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Kelola data pemasukan dan pengeluaran operasional toko</p>
           </div>
           <button
             onClick={handleOpenCreate}
@@ -249,24 +249,24 @@ export default function TransactionsPage() {
         </div>
 
         {/* Filter Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 bg-gray-50/50 p-4 rounded-2xl border border-gray-150/50">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 bg-gray-50/50 dark:bg-muted p-4 rounded-2xl border border-gray-150/50 dark:border-border">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-muted-foreground w-4 h-4" />
             <input
               type="text"
               placeholder="Cari deskripsi..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+              className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <Filter className="text-gray-400 w-4 h-4 shrink-0" />
+            <Filter className="text-gray-400 dark:text-muted-foreground w-4 h-4 shrink-0" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select transition-all"
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select transition-all"
             >
               <option value="all">Semua Tipe</option>
               <option value="income">Pemasukan (Income)</option>
@@ -278,7 +278,7 @@ export default function TransactionsPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select transition-all"
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select transition-all"
             >
               <option value="all">Semua Kategori</option>
               {categoriesList.map((cat) => (
@@ -288,42 +288,42 @@ export default function TransactionsPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Calendar className="text-gray-400 w-4 h-4 shrink-0" />
+            <Calendar className="text-gray-400 dark:text-muted-foreground w-4 h-4 shrink-0" />
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl outline-none text-xs font-semibold text-gray-650 cursor-pointer shadow-sm"
+              className="w-full px-3 py-2 bg-white dark:bg-card border border-gray-200 dark:border-border rounded-xl outline-none text-xs font-semibold text-gray-650 dark:text-muted-foreground cursor-pointer shadow-sm"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <Calendar className="text-gray-400 w-4 h-4 shrink-0" />
+            <Calendar className="text-gray-400 dark:text-muted-foreground w-4 h-4 shrink-0" />
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl outline-none text-xs font-semibold text-gray-650 cursor-pointer shadow-sm"
+              className="w-full px-3 py-2 bg-white dark:bg-card border border-gray-200 dark:border-border rounded-xl outline-none text-xs font-semibold text-gray-650 dark:text-muted-foreground cursor-pointer shadow-sm"
             />
           </div>
         </div>
 
         {/* Table view */}
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Memuat transaksi...</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-gray-100">
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-border">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/70 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50/70 dark:bg-muted text-gray-400 dark:text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-gray-100 dark:border-border">
                   <th className="px-6 py-4">Tipe</th>
                   <th className="px-6 py-4">Kategori</th>
                   <th className="px-6 py-4">Nominal</th>
@@ -332,29 +332,29 @@ export default function TransactionsPage() {
                   <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="text-sm font-medium text-gray-700 divide-y divide-gray-100">
+              <tbody className="text-sm font-medium text-gray-700 dark:text-muted-foreground divide-y divide-gray-100 dark:divide-border">
                 {filteredTransactions.length > 0 ? (
                   filteredTransactions.map((tx) => (
-                    <tr key={tx.id} className="hover:bg-gray-50/20 transition-colors">
+                    <tr key={tx.id} className="hover:bg-gray-50/20 dark:hover:bg-muted transition-colors">
                       <td className="px-6 py-4.5">
                         {tx.type === "income" ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-emerald-50 text-emerald-650 border border-emerald-100 rounded-lg">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 rounded-lg">
                             Pemasukan
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-rose-50 text-rose-650 border border-rose-100 rounded-lg">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-rose-50 dark:bg-rose-500/10 text-rose-650 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20 rounded-lg">
                             Pengeluaran
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4.5 text-gray-800 font-bold capitalize">{tx.category}</td>
-                      <td className={`px-6 py-4.5 font-extrabold ${tx.type === "income" ? "text-emerald-650" : "text-rose-650"}`}>
+                      <td className="px-6 py-4.5 text-gray-800 dark:text-foreground font-bold capitalize">{tx.category}</td>
+                      <td className={`px-6 py-4.5 font-extrabold ${tx.type === "income" ? "text-emerald-650 dark:text-emerald-400" : "text-rose-650 dark:text-rose-400"}`}>
                         {tx.type === "income" ? "+" : "-"} {formatRupiah(tx.amount)}
                       </td>
-                      <td className="px-6 py-4.5 text-xs text-gray-500 font-normal max-w-xs truncate">
+                      <td className="px-6 py-4.5 text-xs text-gray-500 dark:text-muted-foreground font-normal max-w-xs truncate">
                         {tx.description || "-"}
                       </td>
-                      <td className="px-6 py-4.5 text-xs text-gray-400">
+                      <td className="px-6 py-4.5 text-xs text-gray-400 dark:text-muted-foreground">
                         {new Date(tx.date).toLocaleDateString("id-ID", {
                           day: "numeric",
                           month: "short",
@@ -365,13 +365,13 @@ export default function TransactionsPage() {
                         <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => handleOpenEdit(tx)}
-                            className="p-2 text-gray-500 hover:text-primary hover:bg-pink-50/40 rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-gray-500 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/40 dark:hover:bg-primary/10 rounded-xl transition-all cursor-pointer"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(tx.id)}
-                            className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50/40 rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-gray-500 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50/40 dark:hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -381,7 +381,7 @@ export default function TransactionsPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-gray-400 text-xs font-semibold">
+                    <td colSpan={6} className="px-6 py-12 text-center text-gray-400 dark:text-muted-foreground text-xs font-semibold">
                       Tidak ada data transaksi ditemukan.
                     </td>
                   </tr>
@@ -408,15 +408,15 @@ export default function TransactionsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-lg rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
+              className="bg-white dark:bg-card w-full max-w-lg rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">
                   {modalMode === "create" ? "Tambah Transaksi Baru" : "Edit Catatan Transaksi"}
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -425,15 +425,15 @@ export default function TransactionsPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-450 uppercase tracking-wider">Tipe Transaksi</label>
+                    <label className="text-xs font-bold text-gray-450 dark:text-muted-foreground uppercase tracking-wider">Tipe Transaksi</label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => setFormType("income")}
                         className={`py-3 rounded-2xl font-bold text-xs border text-center transition-all cursor-pointer ${
                           formType === "income"
-                            ? "bg-emerald-550 border-emerald-550 text-white shadow-md shadow-emerald-500/10"
-                            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                            ? "bg-emerald-550 dark:bg-emerald-500/10 border-emerald-550 dark:border-emerald-500/20 text-white shadow-md shadow-emerald-500/10"
+                            : "bg-white dark:bg-card border-gray-200 dark:border-border text-gray-600 dark:text-muted-foreground hover:bg-gray-50 dark:hover:bg-muted"
                         }`}
                       >
                         Pemasukan
@@ -443,8 +443,8 @@ export default function TransactionsPage() {
                         onClick={() => setFormType("expense")}
                         className={`py-3 rounded-2xl font-bold text-xs border text-center transition-all cursor-pointer ${
                           formType === "expense"
-                            ? "bg-rose-550 border-rose-550 text-white shadow-md shadow-rose-500/10"
-                            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                            ? "bg-rose-550 dark:bg-rose-500/10 border-rose-550 dark:border-rose-500/20 text-white shadow-md shadow-rose-500/10"
+                            : "bg-white dark:bg-card border-gray-200 dark:border-border text-gray-600 dark:text-muted-foreground hover:bg-gray-50 dark:hover:bg-muted"
                         }`}
                       >
                         Pengeluaran
@@ -453,20 +453,20 @@ export default function TransactionsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-450 uppercase tracking-wider">Tanggal</label>
+                    <label className="text-xs font-bold text-gray-450 dark:text-muted-foreground uppercase tracking-wider">Tanggal</label>
                     <input
                       type="date"
                       required
                       value={formDate}
                       onChange={(e) => setFormDate(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Nominal (Rupiah)</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Nominal (Rupiah)</label>
                     <input
                       type="number"
                       required
@@ -474,39 +474,39 @@ export default function TransactionsPage() {
                       placeholder="Contoh: 150000"
                       value={formAmount}
                       onChange={(e) => setFormAmount(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Kategori</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Kategori</label>
                     <input
                       type="text"
                       required
                       placeholder="Contoh: sales, operasional, gaji"
                       value={formCategory}
                       onChange={(e) => setFormCategory(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm capitalize"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm capitalize"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Deskripsi / Keterangan</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Deskripsi / Keterangan</label>
                   <textarea
                     rows={3}
                     placeholder="Masukkan deskripsi atau keterangan tambahan..."
                     value={formDescription}
                     onChange={(e) => setFormDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-border">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                    className="px-5 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                   >
                     Batal
                   </button>

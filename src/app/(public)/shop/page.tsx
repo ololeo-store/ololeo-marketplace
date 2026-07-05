@@ -115,7 +115,7 @@ export default function Shop() {
   }, []);
 
   return (
-    <main className="min-h-screen pt-6 pb-24 bg-gradient-to-b from-pink-50/30 to-white">
+    <main className="min-h-screen pt-6 pb-24 bg-gradient-to-b from-pink-50/30 dark:from-background to-white dark:to-background">
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
         {/* Header */}
         <div className="text-center mb-10 md:mb-14">
@@ -124,20 +124,20 @@ export default function Shop() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-foreground mb-4">
               Temukan Buket{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">
                 Impianmu
               </span>
             </h1>
-            <p className="text-gray-500 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+            <p className="text-gray-500 dark:text-muted-foreground max-w-xl mx-auto text-sm md:text-base leading-relaxed">
               Handcrafted with love untuk setiap momen spesialmu 🌸
             </p>
           </motion.div>
         </div>
 
         {/* Large Wrapper Card */}
-        <div className="bg-white rounded-3xl p-6 md:p-10 border border-gray-100 shadow-sm shadow-pink-100/10">
+        <div className="bg-white dark:bg-card rounded-3xl p-6 md:p-10 border border-gray-100 dark:border-border shadow-sm shadow-pink-100/10">
           {/* Search & Filter Bar */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -148,19 +148,19 @@ export default function Shop() {
           {/* Search + Sort Row */}
           <div className="flex flex-col sm:flex-row gap-3 mb-5">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Cari buket kesukaanmu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:bg-white focus:outline-none focus:border-pink-300 focus:ring-2 focus:ring-pink-100 transition-all text-sm font-medium"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-border bg-white dark:bg-card focus:bg-white focus:outline-none focus:border-pink-300 focus:ring-2 focus:ring-pink-100 transition-all text-sm font-medium"
               />
             </div>
             <div className="relative w-full sm:w-48" data-sort-dropdown>
               <button
                 onClick={() => setShowSortDropdown(!showSortDropdown)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-pink-200 transition-all text-sm font-medium text-gray-600 flex justify-between items-center"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-border bg-white dark:bg-card hover:border-pink-200 dark:hover:border-primary/25 transition-all text-sm font-medium text-gray-600 dark:text-muted-foreground flex justify-between items-center"
               >
                 <span className="flex items-center gap-2">
                   <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export default function Shop() {
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
-                    className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden py-1"
+                    className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-card border border-gray-100 dark:border-border rounded-xl shadow-xl z-10 overflow-hidden py-1"
                   >
                     {[
                       { value: "default", label: "Default" },
@@ -191,8 +191,8 @@ export default function Shop() {
                         }}
                         className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                           sortOrder === opt.value
-                            ? "text-pink-500 font-semibold bg-pink-50"
-                            : "text-gray-600 hover:bg-gray-50"
+                            ? "text-pink-500 dark:text-primary font-semibold bg-pink-50 dark:bg-primary/10"
+                            : "text-gray-600 dark:text-muted-foreground hover:bg-gray-50 dark:hover:bg-muted"
                         }`}
                       >
                         {opt.label}
@@ -212,8 +212,8 @@ export default function Shop() {
                 onClick={() => setActiveCategory(category)}
                 className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 snap-start ${
                   activeCategory === category
-                    ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md shadow-pink-200/50"
-                    : "bg-white text-gray-500 border border-gray-200 hover:border-pink-200 hover:text-pink-500"
+                    ? "bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary text-white shadow-md shadow-pink-200/50"
+                    : "bg-white dark:bg-card text-gray-500 dark:text-muted-foreground border border-gray-200 dark:border-border hover:border-pink-200 dark:hover:border-primary/25 hover:text-pink-500 dark:hover:text-primary"
                 }`}
               >
                 {category}
@@ -227,7 +227,7 @@ export default function Shop() {
           {/* Left Sidebar - Categories (Desktop Only) */}
           <aside className="hidden md:block w-48 flex-shrink-0">
             <div className="sticky top-24 py-2">
-              <h2 className="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-4 px-3">
+              <h2 className="text-xs font-extrabold uppercase tracking-wider text-gray-400 dark:text-muted-foreground mb-4 px-3">
                 Kategori
               </h2>
               <div className="flex flex-col gap-1">
@@ -237,8 +237,8 @@ export default function Shop() {
                     onClick={() => setActiveCategory(category)}
                     className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
                       activeCategory === category
-                        ? "text-pink-500 bg-pink-50/60 font-black"
-                        : "text-gray-600 hover:text-pink-500 hover:bg-pink-50/20"
+                        ? "text-pink-500 dark:text-primary bg-pink-50/60 dark:bg-primary/10 font-black"
+                        : "text-gray-600 dark:text-muted-foreground hover:text-pink-500 dark:hover:text-primary hover:bg-pink-50/20 dark:hover:bg-primary/10"
                     }`}
                   >
                     {category}
@@ -252,21 +252,21 @@ export default function Shop() {
           <div className="flex-grow">
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-24">
-                <Loader2 className="w-8 h-8 text-pink-400 animate-spin mb-4" />
-                <p className="text-sm text-gray-400 font-medium">Memuat produk...</p>
+                <Loader2 className="w-8 h-8 text-pink-400 dark:text-primary animate-spin mb-4" />
+                <p className="text-sm text-gray-400 dark:text-muted-foreground font-medium">Memuat produk...</p>
               </div>
             ) : filteredProducts.length === 0 ? (
               /* Empty State */
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-20 bg-white rounded-2xl border border-gray-100"
+                className="text-center py-20 bg-white dark:bg-card rounded-2xl border border-gray-100 dark:border-border"
               >
                 <div className="text-5xl mb-4">🌸</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <h3 className="text-xl font-bold text-gray-800 dark:text-foreground mb-2">
                   Tidak ada produk ditemukan
                 </h3>
-                <p className="text-gray-400 text-sm mb-6">
+                <p className="text-gray-400 dark:text-muted-foreground text-sm mb-6">
                   Coba ubah filter atau kata kunci pencarian kamu
                 </p>
                 <button
@@ -274,7 +274,7 @@ export default function Shop() {
                     setSearchQuery("");
                     setActiveCategory("All");
                   }}
-                  className="px-6 py-2.5 rounded-full border-2 border-pink-300 text-pink-500 hover:bg-pink-50 font-semibold text-sm transition-colors"
+                  className="px-6 py-2.5 rounded-full border-2 border-pink-300 dark:border-primary/30 text-pink-500 dark:text-primary hover:bg-pink-50 dark:hover:bg-primary/10 font-semibold text-sm transition-colors"
                 >
                   Reset Filter
                 </button>
@@ -302,7 +302,7 @@ export default function Shop() {
 
             {/* Results count */}
             {!isLoading && filteredProducts.length > 0 && (
-              <p className="text-center md:text-left text-xs text-gray-400 mt-8 font-medium">
+              <p className="text-center md:text-left text-xs text-gray-400 dark:text-muted-foreground mt-8 font-medium">
                 Menampilkan {filteredProducts.length} produk
                 {!useApi && " (offline mode)"}
               </p>
@@ -312,8 +312,8 @@ export default function Shop() {
 
         {/* Recommendation Section Below */}
         {!isLoading && recommendations.length > 0 && (
-          <section className="mt-20 pt-12 border-t border-gray-100">
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-8 flex items-center gap-2">
+          <section className="mt-20 pt-12 border-t border-gray-100 dark:border-border">
+            <h2 className="text-2xl font-extrabold text-gray-900 dark:text-foreground mb-8 flex items-center gap-2">
               <span>✨</span> Rekomendasi Untukmu
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">

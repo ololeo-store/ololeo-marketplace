@@ -115,19 +115,19 @@ export default function CheckoutDrawer({
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-        <div className="p-6 border-b flex items-center justify-between bg-white">
+        <div className="p-6 border-b flex items-center justify-between bg-white dark:bg-card">
           <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary flex items-center gap-3">
             <ShoppingBag className="w-6 h-6 text-primary" />
             {title}
           </h2>
-          <button onClick={onClose} className="p-2.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-2xl transition-all">
+          <button onClick={onClose} className="p-2.5 text-gray-400 dark:text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-2xl transition-all">
             <X className="w-6 h-6" />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
-              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-inner">
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-muted-foreground space-y-4">
+              <div className="w-24 h-24 bg-white dark:bg-card rounded-full flex items-center justify-center shadow-inner">
                 <ShoppingBag className="w-12 h-12 opacity-20" />
               </div>
               <p className="text-lg font-medium">Keranjang Anda masih kosong</p>
@@ -144,7 +144,7 @@ export default function CheckoutDrawer({
               {/* Product List Section */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Produk Pilihan</h3>
+                  <h3 className="text-sm font-bold text-gray-500 dark:text-muted-foreground uppercase tracking-wider">Produk Pilihan</h3>
                   {showAddMore && (
                     <Link 
                       href="/shop" 
@@ -158,19 +158,19 @@ export default function CheckoutDrawer({
                 </div>
                 
                 {items.map((item) => (
-                  <div key={item.id} className="group flex gap-4 p-4 bg-white rounded-3xl shadow-sm border border-pink-100 hover:shadow-md transition-all duration-300 relative overflow-hidden">
+                  <div key={item.id} className="group flex gap-4 p-4 bg-white dark:bg-card rounded-3xl shadow-sm border border-pink-100 dark:border-primary/20 hover:shadow-md transition-all duration-300 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100">
+                    <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100 dark:border-border">
                       <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                     </div>
                     <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
                         <div className="flex justify-between items-start">
-                          <h4 className="font-bold text-gray-800 text-lg line-clamp-1">{item.name}</h4>
+                          <h4 className="font-bold text-gray-800 dark:text-foreground text-lg line-clamp-1">{item.name}</h4>
                           {onRemoveItem && (
                             <button 
                               onClick={() => onRemoveItem(item.id)}
-                              className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                              className="p-2 text-gray-300 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all"
                               title="Hapus item"
                             >
                               <Trash2 className="w-5 h-5" />
@@ -181,18 +181,18 @@ export default function CheckoutDrawer({
                           <span translate="no">Rp {item.price.toLocaleString("id-ID")}</span>
                         </p>
                       </div>
-                      <div className="flex items-center gap-3 bg-gray-50 self-start p-1.5 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-3 bg-gray-50 dark:bg-muted self-start p-1.5 rounded-xl border border-gray-100 dark:border-border">
                         <button 
                           onClick={() => onUpdateQuantity?.(item.id, item.quantity - 1)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white text-gray-500 hover:text-primary hover:shadow-sm transition-all shadow-sm disabled:opacity-30"
+                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-card text-gray-500 dark:text-muted-foreground hover:text-primary hover:shadow-sm transition-all shadow-sm disabled:opacity-30"
                           disabled={!onUpdateQuantity}
                         >
                           <Minus className="w-4 h-4" />
                         </button>
-                        <span className="text-sm font-bold w-6 text-center text-gray-700">{item.quantity}</span>
+                        <span className="text-sm font-bold w-6 text-center text-gray-700 dark:text-muted-foreground">{item.quantity}</span>
                         <button 
                           onClick={() => onUpdateQuantity?.(item.id, item.quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white text-gray-500 hover:text-primary hover:shadow-sm transition-all shadow-sm disabled:opacity-30"
+                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-card text-gray-500 dark:text-muted-foreground hover:text-primary hover:shadow-sm transition-all shadow-sm disabled:opacity-30"
                           disabled={!onUpdateQuantity}
                         >
                           <Plus className="w-4 h-4" />
@@ -203,12 +203,12 @@ export default function CheckoutDrawer({
                 ))}
                 
                 <div className="pt-6 space-y-5">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Informasi Pemesanan</h3>
+                  <h3 className="text-sm font-bold text-gray-500 dark:text-muted-foreground uppercase tracking-wider">Informasi Pemesanan</h3>
                   <div className="space-y-4">
                     <div className="relative">
                       <User className={cn(
                         "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors",
-                        nameError ? "text-red-400" : "text-primary/40"
+                        nameError ? "text-red-400 dark:text-red-400" : "text-primary/40"
                       )} />
                       <input 
                         ref={nameInputRef}
@@ -217,21 +217,21 @@ export default function CheckoutDrawer({
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         className={cn(
-                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 outline-none transition-all font-medium text-gray-700 shadow-sm",
+                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm",
                           nameError 
                             ? "border-red-400 focus:border-red-500 ring-4 ring-red-50" 
-                            : "border-pink-50 focus:border-primary/30"
+                            : "border-pink-50 dark:border-primary/20 focus:border-primary/30"
                         )}
                       />
                       {nameError && (
-                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nama Anda</p>
+                        <p className="text-red-500 dark:text-red-400 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nama Anda</p>
                       )}
                     </div>
 
                     <div className="relative">
                       <Phone className={cn(
                         "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors",
-                        whatsappError ? "text-red-400" : "text-primary/40"
+                        whatsappError ? "text-red-400 dark:text-red-400" : "text-primary/40"
                       )} />
                       <input 
                         ref={whatsappInputRef}
@@ -240,37 +240,37 @@ export default function CheckoutDrawer({
                         value={customerWhatsapp}
                         onChange={(e) => setCustomerWhatsapp(e.target.value)}
                         className={cn(
-                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 outline-none transition-all font-medium text-gray-700 shadow-sm",
+                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm",
                           whatsappError 
                             ? "border-red-400 focus:border-red-500 ring-4 ring-red-50" 
-                            : "border-pink-50 focus:border-primary/30"
+                            : "border-pink-50 dark:border-primary/20 focus:border-primary/30"
                         )}
                       />
                       {whatsappError && (
-                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nomor WhatsApp Anda</p>
+                        <p className="text-red-500 dark:text-red-400 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan isi nomor WhatsApp Anda</p>
                       )}
                     </div>
                     
                     <div className="relative">
                       <Calendar className={cn(
                         "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors pointer-events-none",
-                        dateError ? "text-red-400" : "text-primary/40"
+                        dateError ? "text-red-400 dark:text-red-400" : "text-primary/40"
                       )} />
                       <button 
                         ref={dateInputRef}
                         type="button"
                         onClick={() => setShowCalendar(true)}
                         className={cn(
-                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 outline-none transition-all font-medium text-gray-700 shadow-sm text-left flex items-center justify-between",
+                          "w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm text-left flex items-center justify-between",
                           dateError 
                             ? "border-red-400 focus:border-red-500 ring-4 ring-red-50" 
-                            : "border-pink-50 focus:border-primary/30"
+                            : "border-pink-50 dark:border-primary/20 focus:border-primary/30"
                         )}
                       >
-                        <span className={pickupDate ? "text-gray-800" : "text-gray-400"}>
+                        <span className={pickupDate ? "text-gray-800 dark:text-foreground" : "text-gray-400 dark:text-muted-foreground"}>
                           {pickupDate ? pickupDate.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Pilih Tanggal Pengambilan"}
                         </span>
-                        <span className="text-[10px] text-gray-300 font-bold uppercase">Ubah</span>
+                        <span className="text-[10px] text-gray-300 dark:text-muted-foreground font-bold uppercase">Ubah</span>
                       </button>
                       <input 
                         type="hidden" 
@@ -278,7 +278,7 @@ export default function CheckoutDrawer({
                         value={pickupDate ? pickupDate.toISOString() : ""} 
                       />
                       {dateError && (
-                        <p className="text-red-500 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan pilih tanggal pengambilan</p>
+                        <p className="text-red-500 dark:text-red-400 text-[10px] font-bold mt-1 ml-4 uppercase tracking-wider">Silakan pilih tanggal pengambilan</p>
                       )}
                       {/* Aesthetic Custom Calendar */}
                       <AnimatePresence>
@@ -295,7 +295,7 @@ export default function CheckoutDrawer({
                               initial={{ opacity: 0, scale: 0.95, y: 10 }}
                               animate={{ opacity: 1, scale: 1, y: 0 }}
                               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                              className="absolute left-0 right-0 top-full mt-2 bg-white rounded-3xl shadow-2xl border border-pink-50 p-6 z-[90] overflow-hidden"
+                              className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-card rounded-3xl shadow-2xl border border-pink-50 dark:border-primary/20 p-6 z-[90] overflow-hidden"
                             >
                               <CustomCalendar 
                                 selectedDate={pickupDate} 
@@ -316,7 +316,7 @@ export default function CheckoutDrawer({
                         rows={3}
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border-2 border-pink-50 focus:border-primary/30 outline-none transition-all font-medium text-gray-700 shadow-sm resize-none"
+                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-card border-2 border-pink-50 dark:border-primary/20 focus:border-primary/30 outline-none transition-all font-medium text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                       />
                     </div>
                   </div>
@@ -325,40 +325,40 @@ export default function CheckoutDrawer({
               {/* Summary Section (Receipt Style) */}
               <div className="lg:col-span-5">
                 <div className="sticky top-0">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Ringkasan Pesanan</h3>
-                  <div className="bg-white rounded-t-3xl p-8 shadow-xl relative overflow-hidden">
+                  <h3 className="text-sm font-bold text-gray-500 dark:text-muted-foreground uppercase tracking-wider mb-4">Ringkasan Pesanan</h3>
+                  <div className="bg-white dark:bg-card rounded-t-3xl p-8 shadow-xl relative overflow-hidden">
                     {/* Receipt Decor */}
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-secondary to-primary opacity-50" />
                     
                     <div className="text-center mb-8">
-                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-pink-50 text-primary mb-3">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-pink-50 dark:bg-primary/10 text-primary mb-3">
                         <ReceiptText className="w-6 h-6" />
                       </div>
-                      <h4 className="font-bold text-gray-800 text-xl">OLOLEO BUCKET</h4>
-                      <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest font-medium">Official Receipt</p>
+                      <h4 className="font-bold text-gray-800 dark:text-foreground text-xl">OLOLEO BUCKET</h4>
+                      <p className="text-xs text-gray-400 dark:text-muted-foreground mt-1 uppercase tracking-widest font-medium">Official Receipt</p>
                     </div>
-                    <div className="space-y-4 font-medium text-sm text-gray-600">
-                      <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
+                    <div className="space-y-4 font-medium text-sm text-gray-600 dark:text-muted-foreground">
+                      <div className="flex justify-between border-b border-dashed border-gray-100 dark:border-border pb-2">
                         <span>Pemesan:</span>
                         <span className={cn(
                           "font-bold transition-colors",
-                          nameError ? "text-red-500" : "text-gray-900"
+                          nameError ? "text-red-500 dark:text-red-400" : "text-gray-900 dark:text-foreground"
                         )}>
                           <span translate="no">{customerName || "-"}</span>
                         </span>
                       </div>
-                      <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
+                      <div className="flex justify-between border-b border-dashed border-gray-100 dark:border-border pb-2">
                         <span>WhatsApp:</span>
                         <span className={cn(
                           "font-bold transition-colors",
-                          whatsappError ? "text-red-500" : "text-gray-900"
+                          whatsappError ? "text-red-500 dark:text-red-400" : "text-gray-900 dark:text-foreground"
                         )}>
                           <span translate="no">{customerWhatsapp || "-"}</span>
                         </span>
                       </div>
-                      <div className="flex justify-between border-b border-dashed border-gray-100 pb-2">
+                      <div className="flex justify-between border-b border-dashed border-gray-100 dark:border-border pb-2">
                         <span>Tgl Ambil:</span>
-                        <span className="text-gray-900 font-bold">
+                        <span className="text-gray-900 dark:text-foreground font-bold">
                           <span key={pickupDate ? pickupDate.getTime() : "none"}>
                             {pickupDate ? pickupDate.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : "-"}
                           </span>
@@ -369,26 +369,26 @@ export default function CheckoutDrawer({
                         {items.map((item) => (
                           <div key={item.id} className="flex justify-between">
                             <span className="flex-1 pr-4">{item.name} <span className="text-primary text-xs ml-1 font-bold">x{item.quantity}</span></span>
-                            <span className="text-gray-900">
+                            <span className="text-gray-900 dark:text-foreground">
                               <span translate="no">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
                             </span>
                           </div>
                         ))}
                       </div>
                       {notes && (
-                        <div className="pt-4 border-t border-dashed border-gray-100">
-                          <span className="text-xs text-gray-400 block mb-1">Catatan:</span>
-                          <p className="text-gray-800 text-xs italic bg-gray-50 p-3 rounded-xl border border-gray-100">"{notes}"</p>
+                        <div className="pt-4 border-t border-dashed border-gray-100 dark:border-border">
+                          <span className="text-xs text-gray-400 dark:text-muted-foreground block mb-1">Catatan:</span>
+                          <p className="text-gray-800 dark:text-foreground text-xs italic bg-gray-50 dark:bg-muted p-3 rounded-xl border border-gray-100 dark:border-border">"{notes}"</p>
                         </div>
                       )}
-                      <div className="pt-6 mt-6 border-t-2 border-gray-100 flex justify-between items-center">
-                        <span className="text-lg font-bold text-gray-800">Total</span>
+                      <div className="pt-6 mt-6 border-t-2 border-gray-100 dark:border-border flex justify-between items-center">
+                        <span className="text-lg font-bold text-gray-800 dark:text-foreground">Total</span>
                         <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                           <span translate="no">Rp {totalPrice.toLocaleString("id-ID")}</span>
                         </span>
                       </div>
                       
-                      <div className="pt-4 mt-4 border-t border-dashed border-gray-100 italic text-[10px] text-gray-400 text-center leading-relaxed">
+                      <div className="pt-4 mt-4 border-t border-dashed border-gray-100 dark:border-border italic text-[10px] text-gray-400 dark:text-muted-foreground text-center leading-relaxed">
                         Anda akan diarahkan ke WhatsApp ketika menekan tombol checkout
                       </div>
                     </div>
@@ -425,7 +425,7 @@ export default function CheckoutDrawer({
                       </Link>
                     )}
                   </div>
-                  <p className="text-center text-[10px] text-gray-400 font-medium pt-4">
+                  <p className="text-center text-[10px] text-gray-400 dark:text-muted-foreground font-medium pt-4">
                     Pesanan akan diteruskan ke admin melalui WhatsApp
                   </p>
                 </div>
@@ -479,24 +479,24 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-6">
-        <h4 className="font-bold text-gray-800 capitalize">
+        <h4 className="font-bold text-gray-800 dark:text-foreground capitalize">
           <span key={monthName}>{monthName}</span>
         </h4>
         <div className="flex gap-2">
           <button 
             onClick={prevMonth} 
             disabled={isPrevMonthDisabled}
-            className="p-2 hover:bg-pink-50 rounded-xl transition-colors disabled:opacity-20 disabled:pointer-events-none"
+            className="p-2 hover:bg-pink-50 dark:hover:bg-primary/10 rounded-xl transition-colors disabled:opacity-20 disabled:pointer-events-none"
           >
             <ChevronLeft className="w-4 h-4 text-primary" />
           </button>
-          <button onClick={nextMonth} className="p-2 hover:bg-pink-50 rounded-xl transition-colors"><ChevronRight className="w-4 h-4 text-primary" /></button>
+          <button onClick={nextMonth} className="p-2 hover:bg-pink-50 dark:hover:bg-primary/10 rounded-xl transition-colors"><ChevronRight className="w-4 h-4 text-primary" /></button>
         </div>
       </div>
       
       <div className="grid grid-cols-7 gap-1 mb-2">
         {days.map(d => (
-          <div key={d} className="text-[10px] font-bold text-gray-300 text-center uppercase py-2">{d}</div>
+          <div key={d} className="text-[10px] font-bold text-gray-300 dark:text-muted-foreground text-center uppercase py-2">{d}</div>
         ))}
       </div>
       <div className="grid grid-cols-7 gap-1">
@@ -514,8 +514,8 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
                 isSelected(day) 
                   ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg shadow-primary/30 scale-110 z-10" 
                   : disabled
-                    ? "text-gray-300 cursor-not-allowed opacity-40"
-                    : "text-gray-600 hover:bg-pink-50 hover:text-primary",
+                    ? "text-gray-300 dark:text-muted-foreground cursor-not-allowed opacity-40"
+                    : "text-gray-600 dark:text-muted-foreground hover:bg-pink-50 dark:hover:bg-primary/10 hover:text-primary",
                 isToday(day) && !isSelected(day) && "text-primary font-bold after:content-[''] after:absolute after:bottom-1.5 after:w-1 after:h-1 after:bg-primary after:rounded-full"
               )}
             >

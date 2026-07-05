@@ -263,32 +263,32 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-8 font-sans">
-      <div className="bg-white p-6 md:p-8 rounded-3xl border border-gray-200/60 shadow-sm space-y-6">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+      <div className="bg-white dark:bg-card p-6 md:p-8 rounded-3xl border border-gray-200/60 dark:border-border shadow-sm space-y-6">
+        <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
           <div className="flex items-center gap-3">
-            <span className="p-3 rounded-2xl bg-pink-50 text-primary">
+            <span className="p-3 rounded-2xl bg-pink-50 dark:bg-primary/10 text-primary">
               <TrendingUp className="w-6 h-6" />
             </span>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Web Analytics & Trafik</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Analisis perilaku pelanggan, statistik kunjungan, serta performa penjualan toko</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Web Analytics & Trafik</h3>
+              <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Analisis perilaku pelanggan, statistik kunjungan, serta performa penjualan toko</p>
             </div>
           </div>
           <button
             onClick={fetchAnalytics}
-            className="p-2 text-gray-400 hover:text-primary hover:bg-pink-50/50 rounded-xl transition-all"
+            className="p-2 text-gray-400 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/50 dark:hover:bg-primary/10 rounded-xl transition-all"
           >
             Refresh
           </button>
         </div>
 
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-455">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-455 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Menganalisis data aktivitas web...</p>
           </div>
         ) : error || !data ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error || "Gagal memuat data."}</p>
           </div>
@@ -296,55 +296,55 @@ export default function AnalyticsPage() {
           <div className="space-y-8">
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              <div className="bg-white border border-gray-150 p-5 rounded-3xl space-y-3 shadow-xs">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-5 rounded-3xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pageviews</span>
-                  <span className="p-2 rounded-xl bg-pink-50 text-primary">
+                  <span className="text-[10px] font-bold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">Pageviews</span>
+                  <span className="p-2 rounded-xl bg-pink-50 dark:bg-primary/10 text-primary">
                     <Eye className="w-4 h-4" />
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-xl font-extrabold text-gray-800">{data.total_pageviews}</h4>
-                  <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Total klik halaman</p>
+                  <h4 className="text-xl font-extrabold text-gray-800 dark:text-foreground">{data.total_pageviews}</h4>
+                  <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Total klik halaman</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-150 p-5 rounded-3xl space-y-3 shadow-xs">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-5 rounded-3xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pengunjung</span>
-                  <span className="p-2 rounded-xl bg-blue-50 text-blue-500">
+                  <span className="text-[10px] font-bold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">Pengunjung</span>
+                  <span className="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400">
                     <Users className="w-4 h-4" />
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-xl font-extrabold text-gray-800">{data.unique_visitors}</h4>
-                  <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Pengunjung unik (IP)</p>
+                  <h4 className="text-xl font-extrabold text-gray-800 dark:text-foreground">{data.unique_visitors}</h4>
+                  <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Pengunjung unik (IP)</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-150 p-5 rounded-3xl space-y-3 shadow-xs">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-5 rounded-3xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pendapatan</span>
-                  <span className="p-2 rounded-xl bg-emerald-50 text-emerald-500">
+                  <span className="text-[10px] font-bold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">Pendapatan</span>
+                  <span className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500">
                     <DollarSign className="w-4 h-4" />
                   </span>
                 </div>
                 <div>
                   <h4 className="text-xl font-extrabold text-gray-850 truncate">{formatRupiah(data.total_revenue)}</h4>
-                  <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Dari transaksi sukses</p>
+                  <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Dari transaksi sukses</p>
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-150 p-5 rounded-3xl space-y-3 shadow-xs">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-5 rounded-3xl space-y-3 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Konversi</span>
-                  <span className="p-2 rounded-xl bg-purple-50 text-purple-500">
+                  <span className="text-[10px] font-bold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">Konversi</span>
+                  <span className="p-2 rounded-xl bg-purple-50 dark:bg-secondary/10 text-purple-500 dark:text-primary">
                     <Percent className="w-4 h-4" />
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-xl font-extrabold text-gray-800">{data.conversion_rate}%</h4>
-                  <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Rasio order dibanding visitor</p>
+                  <h4 className="text-xl font-extrabold text-gray-800 dark:text-foreground">{data.conversion_rate}%</h4>
+                  <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Rasio order dibanding visitor</p>
                 </div>
               </div>
             </div>
@@ -352,15 +352,15 @@ export default function AnalyticsPage() {
             {/* Graphs Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Traffic Chart */}
-              <div className="bg-white border border-gray-150 p-6 rounded-3xl space-y-4 shadow-sm">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-6 rounded-3xl space-y-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-sm text-gray-800">Tren Kunjungan Website (7 Hari)</h4>
-                    <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Perbandingan pageviews & pengunjung unik</p>
+                    <h4 className="font-bold text-sm text-gray-800 dark:text-foreground">Tren Kunjungan Website (7 Hari)</h4>
+                    <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Perbandingan pageviews & pengunjung unik</p>
                   </div>
-                  <div className="flex items-center gap-3 text-[9px] font-bold text-gray-500">
+                  <div className="flex items-center gap-3 text-[9px] font-bold text-gray-500 dark:text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-pink-500" /> Pageviews
+                      <span className="w-2.5 h-2.5 rounded-full bg-pink-500 dark:bg-primary" /> Pageviews
                     </span>
                     <span className="flex items-center gap-1">
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Visitor
@@ -371,10 +371,10 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Revenue Chart */}
-              <div className="bg-white border border-gray-150 p-6 rounded-3xl space-y-4 shadow-sm">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-6 rounded-3xl space-y-4 shadow-sm">
                 <div>
-                  <h4 className="font-bold text-sm text-gray-800">Performa Penjualan & Omset (7 Hari)</h4>
-                  <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Statistik pendapatan harian dalam rupiah</p>
+                  <h4 className="font-bold text-sm text-gray-800 dark:text-foreground">Performa Penjualan & Omset (7 Hari)</h4>
+                  <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Statistik pendapatan harian dalam rupiah</p>
                 </div>
                 {renderRevenueChart(data.sales_history)}
               </div>
@@ -383,14 +383,14 @@ export default function AnalyticsPage() {
             {/* Detailed tables grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Popular Pages path counts */}
-              <div className="bg-white border border-gray-150 p-6 rounded-3xl space-y-4 shadow-sm">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-6 rounded-3xl space-y-4 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-gray-50 text-gray-500">
+                  <span className="p-2 rounded-xl bg-gray-50 dark:bg-muted text-gray-500 dark:text-muted-foreground">
                     <Globe className="w-4 h-4" />
                   </span>
                   <div>
-                    <h4 className="font-bold text-sm text-gray-800">Halaman Paling Sering Dikunjungi</h4>
-                    <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Top path link yang dibuka customer</p>
+                    <h4 className="font-bold text-sm text-gray-800 dark:text-foreground">Halaman Paling Sering Dikunjungi</h4>
+                    <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Top path link yang dibuka customer</p>
                   </div>
                 </div>
                 <div className="space-y-3 pt-2">
@@ -398,10 +398,10 @@ export default function AnalyticsPage() {
                     data.page_paths.map((p, i) => (
                       <div key={i} className="space-y-1">
                         <div className="flex justify-between text-xs font-bold text-gray-750">
-                          <span className="font-mono text-gray-700">{p.path}</span>
+                          <span className="font-mono text-gray-700 dark:text-muted-foreground">{p.path}</span>
                           <span>{p.count} Views</span>
                         </div>
-                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-gray-100 dark:bg-muted rounded-full overflow-hidden">
                           <div
                             className="h-full bg-primary rounded-full transition-all"
                             style={{
@@ -412,20 +412,20 @@ export default function AnalyticsPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-center text-xs text-gray-400 py-6">Belum ada data kunjungan.</p>
+                    <p className="text-center text-xs text-gray-400 dark:text-muted-foreground py-6">Belum ada data kunjungan.</p>
                   )}
                 </div>
               </div>
 
               {/* Top Selling Products */}
-              <div className="bg-white border border-gray-150 p-6 rounded-3xl space-y-4 shadow-sm">
+              <div className="bg-white dark:bg-card border border-gray-150 dark:border-border p-6 rounded-3xl space-y-4 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-yellow-50 text-yellow-500">
+                  <span className="p-2 rounded-xl bg-yellow-50 dark:bg-yellow-500/10 text-yellow-500 dark:text-yellow-400">
                     <Award className="w-4 h-4" />
                   </span>
                   <div>
-                    <h4 className="font-bold text-sm text-gray-800">Produk Terlaris (Top Selling)</h4>
-                    <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Produk paling banyak dipesan pelanggan</p>
+                    <h4 className="font-bold text-sm text-gray-800 dark:text-foreground">Produk Terlaris (Top Selling)</h4>
+                    <p className="text-[10px] text-gray-400 dark:text-muted-foreground font-semibold mt-0.5">Produk paling banyak dipesan pelanggan</p>
                   </div>
                 </div>
                 <div className="space-y-3 pt-2">
@@ -436,7 +436,7 @@ export default function AnalyticsPage() {
                           <span>{p.name}</span>
                           <span>{p.quantity} Unit Terjual</span>
                         </div>
-                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-gray-100 dark:bg-muted rounded-full overflow-hidden">
                           <div
                             className="h-full bg-emerald-500 rounded-full transition-all"
                             style={{
@@ -447,7 +447,7 @@ export default function AnalyticsPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-center text-xs text-gray-400 py-6">Belum ada pesanan sukses.</p>
+                    <p className="text-center text-xs text-gray-400 dark:text-muted-foreground py-6">Belum ada pesanan sukses.</p>
                   )}
                 </div>
               </div>

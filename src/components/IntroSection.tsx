@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function IntroSection() {
   return (
-    <section className="py-24 bg-white overflow-hidden" id="intro">
+    <section className="py-24 bg-white dark:bg-card overflow-hidden" id="intro">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           <motion.div 
@@ -33,10 +33,10 @@ export default function IntroSection() {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="flex-1 w-full text-center lg:text-left"
           >
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-foreground mb-6 leading-tight">
               Menghadirkan Kebahagiaan dalam Setiap <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Rangkaian Bunga.</span>
             </h2>
-            <div className="space-y-6 text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <div className="space-y-6 text-lg text-gray-600 dark:text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0">
               <p>
                 Ololeo Bucket hadir berawal dari sebuah passion sederhana: melihat senyum tulus mengembang saat seseorang menerima buket bunga. Kami percaya bahwa bunga bukan sekadar pajangan, melainkan perantara pesan yang tak mampu diungkapkan.
               </p>

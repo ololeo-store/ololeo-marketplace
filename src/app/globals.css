@@ -6,8 +6,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #f9a8d4;
-  --color-secondary: #a78bfa;
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-accent: #fbbf24;
   --font-sans: 'Puritan', sans-serif;
   --font-serif: 'Noto Serif', serif;
@@ -23,11 +23,11 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent-foreground: hsl(240 5.9% 10%);
-  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive: var(--destructive);
   --color-destructive-foreground: hsl(0 0% 98%);
   --color-border: var(--border);
   --color-input: var(--border);
-  --color-ring: #f9a8d4;
+  --color-ring: var(--ring);
   --radius: 0.625rem;
 }
 
@@ -40,21 +40,28 @@
     --muted: #fdf2f8;
     --muted-foreground: #6b7280;
     --border: #f3d9e8;
+    --primary: #f9a8d4;
+    --secondary: #a78bfa;
+    --destructive: hsl(0 84.2% 60.2%);
+    --ring: #f9a8d4;
 
-    --gradient-wallet: linear-gradient(135deg, #fbcfe8 0%, #ddd6fe 55%, #fde68a 100%);
     color-scheme: light dark;
   }
 
+  /* Dark palette matched 1:1 to ololeo-admin's .dark tokens (app.css) */
   .dark {
-    --background: #0f0f1a;
-    --foreground: #f4f2f8;
-    --card: #17172a;
-    --card-foreground: #f4f2f8;
-    --muted: #1c1c30;
-    --muted-foreground: #a3a0b3;
-    --border: rgb(255 255 255 / 0.08);
+    --background: hsl(248 33% 7%);
+    --foreground: hsl(240 20% 95%);
+    --card: hsl(245 29% 13%);
+    --card-foreground: hsl(240 20% 95%);
+    --muted: hsl(245 20% 18%);
+    --muted-foreground: hsl(240 10% 65%);
+    --border: hsl(240 20% 100% / 0.08);
+    --primary: hsl(330 90% 70%);
+    --secondary: hsl(258 90% 70%);
+    --destructive: hsl(0 72% 60%);
+    --ring: hsl(330 90% 70%);
 
-    --gradient-wallet: linear-gradient(135deg, #a855f7 0%, #6366f1 45%, #ec4899 100%);
     color-scheme: dark;
   }
 }

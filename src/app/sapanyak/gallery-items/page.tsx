@@ -150,15 +150,15 @@ export default function GalleryItemsPage() {
 
   return (
     <div className="space-y-8 font-sans">
-      <div className="bg-white p-6 md:p-8 rounded-3xl border border-gray-200/60 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-card p-6 md:p-8 rounded-3xl border border-gray-200/60 dark:border-border shadow-sm space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="p-3 rounded-2xl bg-pink-50 text-primary">
+            <span className="p-3 rounded-2xl bg-pink-50 dark:bg-primary/10 text-primary">
               <ImageIcon className="w-6 h-6" />
             </span>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Foto Galeri Buket</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Kelola foto-foto buket cantik untuk dipasang pada halaman portofolio toko</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Foto Galeri Buket</h3>
+              <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Kelola foto-foto buket cantik untuk dipasang pada halaman portofolio toko</p>
             </div>
           </div>
           <button
@@ -172,24 +172,24 @@ export default function GalleryItemsPage() {
 
         {/* Search Input */}
         <div className="max-w-md relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-muted-foreground w-4 h-4" />
           <input
             type="text"
             placeholder="Cari berdasarkan caption atau nama produk..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
           />
         </div>
 
         {/* Grid and layout */}
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Memuat foto galeri...</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error}</p>
           </div>
@@ -203,10 +203,10 @@ export default function GalleryItemsPage() {
                     <motion.div
                       layout
                       key={item.id}
-                      className="bg-white rounded-[2rem] border border-gray-150 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full group"
+                      className="bg-white dark:bg-card rounded-[2rem] border border-gray-150 dark:border-border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full group"
                     >
                       {/* Image Preview Container */}
-                      <div className="relative aspect-square overflow-hidden bg-gray-50 shrink-0">
+                      <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-muted shrink-0">
                         <img
                           src={item.image_url}
                           alt={item.caption || "Foto galeri"}
@@ -215,13 +215,13 @@ export default function GalleryItemsPage() {
                         <div className="absolute top-4 right-4 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <button
                             onClick={() => handleOpenEdit(item)}
-                            className="p-2.5 bg-white/90 backdrop-blur-md text-gray-600 hover:text-primary hover:bg-white rounded-xl shadow-sm transition-all cursor-pointer"
+                            className="p-2.5 bg-white/90 dark:bg-card backdrop-blur-md text-gray-600 dark:text-muted-foreground hover:text-primary hover:bg-white dark:hover:bg-card rounded-xl shadow-sm transition-all cursor-pointer"
                           >
                             <Edit className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDelete(item.id)}
-                            className="p-2.5 bg-white/90 backdrop-blur-md text-gray-600 hover:text-red-500 hover:bg-white rounded-xl shadow-sm transition-all cursor-pointer"
+                            className="p-2.5 bg-white/90 dark:bg-card backdrop-blur-md text-gray-600 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-card rounded-xl shadow-sm transition-all cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -230,19 +230,19 @@ export default function GalleryItemsPage() {
 
                       {/* Content Description */}
                       <div className="p-5 flex-grow flex flex-col justify-between gap-4">
-                        <p className="text-xs font-semibold text-gray-600 line-clamp-3 leading-relaxed">
-                          {item.caption || <span className="text-gray-400 font-normal italic">Tidak ada keterangan</span>}
+                        <p className="text-xs font-semibold text-gray-600 dark:text-muted-foreground line-clamp-3 leading-relaxed">
+                          {item.caption || <span className="text-gray-400 dark:text-muted-foreground font-normal italic">Tidak ada keterangan</span>}
                         </p>
 
-                        <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                          <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tautan Produk</span>
+                        <div className="pt-3 border-t border-gray-100 dark:border-border flex items-center justify-between">
+                          <span className="text-[10px] text-gray-400 dark:text-muted-foreground font-bold uppercase tracking-wider">Tautan Produk</span>
                           {linkedProduct ? (
                             <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary max-w-[120px] truncate">
                               <LinkIcon className="w-3 h-3 shrink-0" />
                               <span className="truncate">{linkedProduct.name}</span>
                             </span>
                           ) : (
-                            <span className="text-[11px] font-medium text-gray-450 italic">Tidak Terhubung</span>
+                            <span className="text-[11px] font-medium text-gray-450 dark:text-muted-foreground italic">Tidak Terhubung</span>
                           )}
                         </div>
                       </div>
@@ -251,7 +251,7 @@ export default function GalleryItemsPage() {
                 })}
               </div>
             ) : (
-              <div className="py-20 text-center text-gray-400 text-xs font-semibold border border-dashed border-gray-200 rounded-3xl">
+              <div className="py-20 text-center text-gray-400 dark:text-muted-foreground text-xs font-semibold border border-dashed border-gray-200 dark:border-border rounded-3xl">
                 Tidak ada foto galeri ditemukan.
               </div>
             )}
@@ -275,15 +275,15 @@ export default function GalleryItemsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-md rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
+              className="bg-white dark:bg-card w-full max-w-md rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">
                   {modalMode === "create" ? "Tambah Foto Galeri Baru" : "Edit Foto Galeri"}
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -291,23 +291,23 @@ export default function GalleryItemsPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">URL Link Gambar</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">URL Link Gambar</label>
                   <input
                     type="url"
                     required
                     placeholder="https://example.com/foto-buket.jpg"
                     value={formImageUrl}
                     onChange={(e) => setFormImageUrl(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Hubungkan ke Produk (Optional)</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Hubungkan ke Produk (Optional)</label>
                   <select
                     value={formProductId}
                     onChange={(e) => setFormProductId(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-bold text-gray-700 cursor-pointer shadow-sm custom-select"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select"
                   >
                     <option value="">-- Jangan hubungkan ke produk manapun --</option>
                     {products.map((p) => (
@@ -317,21 +317,21 @@ export default function GalleryItemsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Caption / Keterangan (Optional)</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Caption / Keterangan (Optional)</label>
                   <textarea
                     rows={4}
                     placeholder="Tulis detail singkat buket ini, misalnya: Flower bucket pastel wrap pink dominan mawar putih."
                     value={formCaption}
                     onChange={(e) => setFormCaption(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-border">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                    className="px-5 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                   >
                     Batal
                   </button>

@@ -104,8 +104,8 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-card">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500 dark:border-primary"></div>
       </div>
     );
   }
@@ -131,7 +131,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   };
 
   return (
-    <main className="min-h-screen pt-0 md:pt-8 pb-0 md:pb-24 bg-white relative overflow-hidden">
+    <main className="min-h-screen pt-0 md:pt-8 pb-0 md:pb-24 bg-white dark:bg-card relative overflow-hidden">
       {/* Checkout Drawer for Direct Buy */}
       <CheckoutDrawer
         isOpen={isCheckoutOpen}
@@ -188,9 +188,9 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       <div className="hidden md:block container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
         <Link
           href="/shop"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-primary transition-colors mb-10 font-medium"
+          className="inline-flex items-center gap-2 text-gray-500 dark:text-muted-foreground hover:text-primary transition-colors mb-10 font-medium"
         >
-          <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100">
+          <div className="w-10 h-10 rounded-full bg-gray-50 dark:bg-muted flex items-center justify-center border border-gray-100 dark:border-border">
             <ArrowLeft className="w-5 h-5" />
           </div>
           <span>Back to Shop</span>
@@ -225,7 +225,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               {product.category}
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-foreground mb-6 leading-tight">
               {product.name}
             </h1>
 
@@ -233,7 +233,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
             </div>
 
-            <div className="prose prose-lg text-gray-600 mb-12 bg-gray-50 p-6 rounded-3xl border border-gray-100">
+            <div className="prose prose-lg text-gray-600 dark:text-muted-foreground mb-12 bg-gray-50 dark:bg-muted p-6 rounded-3xl border border-gray-100 dark:border-border">
               <p className="leading-relaxed">{product.description}</p>
             </div>
 
@@ -242,7 +242,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 onClick={handleAddToCart}
                 className={`flex-1 py-4 md:py-5 rounded-full font-bold text-sm md:text-lg flex items-center justify-center gap-2 md:gap-3 transition-all duration-300 border-2 ${isAdded
                   ? "bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-[0_10px_25px_rgba(167,139,250,0.45)] animate-pulse"
-                  : "bg-white text-gray-800 border-gray-200 hover:border-primary/50 hover:bg-primary/5"
+                  : "bg-white dark:bg-card text-gray-800 dark:text-foreground border-gray-200 dark:border-border hover:border-primary/50 hover:bg-primary/5"
                   }`}
               >
                 <span className="shrink-0 flex items-center justify-center">
@@ -274,16 +274,16 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
           <div className="w-full flex items-center justify-between mb-4">
             <Link
               href="/shop"
-              className="w-11 h-11 bg-white/90 backdrop-blur-md rounded-full shadow-sm flex items-center justify-center border border-white/20 active:scale-95 transition-transform text-gray-800 hover:text-primary"
+              className="w-11 h-11 bg-white/90 dark:bg-card backdrop-blur-md rounded-full shadow-sm flex items-center justify-center border border-white/20 active:scale-95 transition-transform text-gray-800 dark:text-foreground hover:text-primary"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <span className="font-poppins font-semibold text-lg text-gray-800">Details</span>
+            <span className="font-poppins font-semibold text-lg text-gray-800 dark:text-foreground">Details</span>
             <button
               onClick={() => setIsFavorite(!isFavorite)}
-              className="w-11 h-11 bg-white/90 backdrop-blur-md rounded-full shadow-sm flex items-center justify-center border border-white/20 active:scale-95 transition-transform text-gray-800"
+              className="w-11 h-11 bg-white/90 dark:bg-card backdrop-blur-md rounded-full shadow-sm flex items-center justify-center border border-white/20 active:scale-95 transition-transform text-gray-800 dark:text-foreground"
             >
-              <Heart className={`w-5 h-5 transition-colors ${isFavorite ? "fill-secondary text-secondary" : "text-gray-400"}`} />
+              <Heart className={`w-5 h-5 transition-colors ${isFavorite ? "fill-secondary text-secondary" : "text-gray-400 dark:text-muted-foreground"}`} />
             </button>
           </div>
 
@@ -301,22 +301,22 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Details Glass Card */}
-        <div className="w-full bg-white/70 backdrop-blur-xl border-t border-x border-white/40 rounded-t-[2.5rem] px-4 pt-8 pb-32 shadow-[0_-10px_30px_rgba(0,0,0,0.04)] relative -mt-4 flex flex-col gap-6">
+        <div className="w-full bg-white/70 dark:bg-card backdrop-blur-xl border-t border-x border-white/40 rounded-t-[2.5rem] px-4 pt-8 pb-32 shadow-[0_-10px_30px_rgba(0,0,0,0.04)] relative -mt-4 flex flex-col gap-6">
           {/* Title & Stepper Row */}
           <div className="flex justify-between items-center gap-4">
             <div className="flex-grow">
               <span className="text-xs font-bold text-primary uppercase tracking-wider mb-1 block">{product.category}</span>
-              <h1 className="text-2xl font-bold text-gray-900 leading-tight">{product.name}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground leading-tight">{product.name}</h1>
             </div>
             {/* Stepper */}
-            <div className="flex items-center gap-3 bg-gray-100/60 backdrop-blur-sm p-1 rounded-full border border-white/50 shrink-0">
+            <div className="flex items-center gap-3 bg-gray-100/60 dark:bg-muted backdrop-blur-sm p-1 rounded-full border border-white/50 shrink-0">
               <button
                 onClick={() => handleUpdateQuantity(product.id, quantity - 1)}
-                className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600 active:scale-95 transition-transform"
+                className="w-8 h-8 rounded-full bg-white dark:bg-card shadow-sm flex items-center justify-center text-gray-600 dark:text-muted-foreground active:scale-95 transition-transform"
               >
                 <Minus className="w-4 h-4" />
               </button>
-              <span className="w-6 text-center font-semibold text-gray-800 text-sm">{quantity}</span>
+              <span className="w-6 text-center font-semibold text-gray-800 dark:text-foreground text-sm">{quantity}</span>
               <button
                 onClick={() => handleUpdateQuantity(product.id, quantity + 1)}
                 className="w-8 h-8 rounded-full bg-secondary/15 text-secondary flex items-center justify-center active:scale-95 transition-transform hover:bg-secondary hover:text-white"
@@ -328,15 +328,15 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
           {/* Price */}
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">Price</span>
-            <span className="text-2xl font-bold text-gray-900">Rp {product.price.toLocaleString("id-ID")}</span>
+            <span className="text-xs text-gray-400 dark:text-muted-foreground font-medium uppercase tracking-wide">Price</span>
+            <span className="text-2xl font-bold text-gray-900 dark:text-foreground">Rp {product.price.toLocaleString("id-ID")}</span>
           </div>
 
           {/* Description Section */}
           <div className="flex flex-col gap-3">
             <span className="text-xs font-bold text-primary/80 uppercase tracking-widest">Description</span>
-            <div className="bg-white/40 border border-white/50 rounded-2xl p-5 shadow-sm backdrop-blur-sm">
-              <p className="text-sm leading-relaxed text-gray-600 font-medium">{product.description}</p>
+            <div className="bg-white/40 dark:bg-card border border-white/50 rounded-2xl p-5 shadow-sm backdrop-blur-sm">
+              <p className="text-sm leading-relaxed text-gray-600 dark:text-muted-foreground font-medium">{product.description}</p>
             </div>
           </div>
 
@@ -344,7 +344,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
           <div className="flex justify-center mt-2 pb-4">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-primary active:scale-95 transition-all font-semibold"
+              className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-muted-foreground hover:text-primary active:scale-95 transition-all font-semibold"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Shop</span>
@@ -358,7 +358,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             onClick={handleAddToCart}
             className={`flex-1 py-4 rounded-3xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 border-2 pointer-events-auto shadow-lg shadow-gray-200/50 ${isAdded
               ? "bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-[0_10px_25px_rgba(167,139,250,0.45)]"
-              : "bg-white text-gray-800 border-white hover:bg-gray-50"
+              : "bg-white dark:bg-card text-gray-800 dark:text-foreground border-white hover:bg-gray-50 dark:hover:bg-muted"
               }`}
           >
             <ShoppingBag className="w-4 h-4" />

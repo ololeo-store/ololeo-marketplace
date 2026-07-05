@@ -65,7 +65,7 @@ export function SignupForm({
               <div className="flex flex-col items-center gap-2 text-center">
                 <Link
                   href="/"
-                  className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400"
+                  className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary"
                 >
                   Ololeo Store
                 </Link>
@@ -75,7 +75,7 @@ export function SignupForm({
               </div>
 
               {error && (
-                <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm font-medium text-center">
+                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium text-center">
                   {error}
                 </div>
               )}
@@ -151,7 +151,7 @@ export function SignupForm({
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white font-bold shadow-md shadow-pink-200/50"
+                  className="bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary hover:from-pink-500 hover:to-purple-500 text-white font-bold shadow-md shadow-pink-200/50"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
@@ -166,19 +166,19 @@ export function SignupForm({
 
               <FieldDescription className="text-center">
                 Sudah punya akun?{" "}
-                <Link href="/login" className="text-pink-500 font-semibold hover:underline">
+                <Link href="/login" className="text-pink-500 dark:text-primary font-semibold hover:underline">
                   Masuk
                 </Link>
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-gradient-to-br from-purple-100 to-pink-100 md:flex items-center justify-center">
+          <div className="relative hidden bg-gradient-to-br from-purple-100 to-pink-100 dark:bg-none dark:bg-muted md:flex items-center justify-center">
             <div className="text-center p-8">
               <div className="text-6xl mb-4">💐</div>
-              <h3 className="text-xl font-bold text-gray-700 mb-2">
+              <h3 className="text-xl font-bold text-gray-700 dark:text-muted-foreground mb-2">
                 Bergabung dengan Ololeo
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-muted-foreground">
                 Daftar dan temukan buket bunga cantik untuk setiap momen
               </p>
             </div>

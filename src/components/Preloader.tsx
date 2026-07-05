@@ -40,7 +40,7 @@ export default function Preloader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] bg-white dark:bg-card flex flex-col items-center justify-center overflow-hidden"
         >
           {/* Aesthetic Blur Glow Background Effects */}
           <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
@@ -52,14 +52,14 @@ export default function Preloader() {
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: [0, 1.2, 1], opacity: [0, 1, 0] }}
               transition={{ duration: 1.5, ease: "easeOut", times: [0, 0.7, 1] }}
-              className="absolute w-32 h-32 bg-gradient-to-tr from-primary/60 to-secondary/60 rounded-full blur-xl"
+              className="absolute w-32 h-32 bg-gradient-to-tr from-primary/60 to-secondary/60 dark:bg-none dark:bg-primary/40 rounded-full blur-xl"
             />
             {/* Second bloom layer */}
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: [0, 1.5, 1.1], opacity: [0, 0.8, 0] }}
               transition={{ duration: 1.8, ease: "easeOut", delay: 0.1, times: [0, 0.7, 1] }}
-              className="absolute w-40 h-40 bg-gradient-to-tr from-pink-300/40 to-purple-300/40 rounded-full blur-2xl"
+              className="absolute w-40 h-40 bg-gradient-to-tr from-pink-300/40 to-purple-300/40 dark:bg-none dark:bg-secondary/30 rounded-full blur-2xl"
             />
             {/* Core flower-like element */}
             <motion.div
@@ -83,7 +83,7 @@ export default function Preloader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.6 }}
-              className="text-gray-500 font-medium tracking-widest uppercase text-xs"
+              className="text-gray-500 dark:text-muted-foreground font-medium tracking-widest uppercase text-xs"
             >
               Crafted with love
             </motion.p>

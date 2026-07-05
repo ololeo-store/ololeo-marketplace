@@ -193,15 +193,15 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-8 font-sans">
-      <div className="bg-white rounded-3xl border border-gray-200/60 shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
+      <div className="bg-white dark:bg-card rounded-3xl border border-gray-200/60 dark:border-border shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="p-3 rounded-2xl bg-pink-50 text-primary">
+            <span className="p-3 rounded-2xl bg-pink-50 dark:bg-primary/10 text-primary">
               <Award className="w-6 h-6" />
             </span>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Daftar Produk Buket</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Kelola katalog produk buket bunga beserta harga dan stok</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Daftar Produk Buket</h3>
+              <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Kelola katalog produk buket bunga beserta harga dan stok</p>
             </div>
           </div>
           <button
@@ -214,15 +214,15 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters and Search */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-150/50">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50/50 dark:bg-muted p-4 rounded-2xl border border-gray-150/50 dark:border-border">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-muted-foreground w-4 h-4" />
             <input
               type="text"
               placeholder="Cari produk..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+              className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
             />
           </div>
 
@@ -230,7 +230,7 @@ export default function ProductsPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select transition-all"
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select transition-all"
             >
               <option value="all">Semua Kategori</option>
               {categories.map((cat) => (
@@ -243,7 +243,7 @@ export default function ProductsPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select transition-all"
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select transition-all"
             >
               <option value="all">Semua Status</option>
               <option value="active">Aktif (Tampil)</option>
@@ -254,20 +254,20 @@ export default function ProductsPage() {
 
         {/* Table layout */}
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Memuat katalog produk...</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-gray-100">
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-border">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/70 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50/70 dark:bg-muted text-gray-400 dark:text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-gray-100 dark:border-border">
                   <th className="px-6 py-4">Foto</th>
                   <th className="px-6 py-4">Nama Produk</th>
                   <th className="px-6 py-4">Kategori</th>
@@ -277,35 +277,35 @@ export default function ProductsPage() {
                   <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="text-sm font-medium text-gray-700 divide-y divide-gray-100">
+              <tbody className="text-sm font-medium text-gray-700 dark:text-muted-foreground divide-y divide-gray-100 dark:divide-border">
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((p) => {
                     const categoryName = categories.find((c) => c.id === p.category_id)?.name || "Kategori Terhapus";
                     return (
-                      <tr key={p.id} className="hover:bg-gray-50/20 transition-colors">
+                      <tr key={p.id} className="hover:bg-gray-50/20 dark:hover:bg-muted transition-colors">
                         <td className="px-6 py-4">
                           {p.image_url ? (
                             <img
                               src={p.image_url}
                               alt={p.name}
-                              className="w-10 h-10 object-cover rounded-xl border border-gray-100 shadow-sm shrink-0"
+                              className="w-10 h-10 object-cover rounded-xl border border-gray-100 dark:border-border shadow-sm shrink-0"
                             />
                           ) : (
-                            <span className="w-10 h-10 bg-gray-100 text-gray-400 flex items-center justify-center rounded-xl border border-gray-100 shrink-0">
+                            <span className="w-10 h-10 bg-gray-100 dark:bg-muted text-gray-400 dark:text-muted-foreground flex items-center justify-center rounded-xl border border-gray-100 dark:border-border shrink-0">
                               <ImageIcon className="w-4 h-4" />
                             </span>
                           )}
                         </td>
-                        <td className="px-6 py-4 font-bold text-gray-800">
+                        <td className="px-6 py-4 font-bold text-gray-800 dark:text-foreground">
                           <div>{p.name}</div>
-                          <div className="text-[10px] font-mono font-medium text-gray-400 mt-0.5">{p.slug}</div>
+                          <div className="text-[10px] font-mono font-medium text-gray-400 dark:text-muted-foreground mt-0.5">{p.slug}</div>
                         </td>
-                        <td className="px-6 py-4 font-semibold text-gray-650 capitalize">{categoryName}</td>
-                        <td className="px-6 py-4 font-extrabold text-gray-900">
+                        <td className="px-6 py-4 font-semibold text-gray-650 dark:text-muted-foreground capitalize">{categoryName}</td>
+                        <td className="px-6 py-4 font-extrabold text-gray-900 dark:text-foreground">
                           {p.discount_price ? (
                             <div className="flex flex-col">
                               <span className="text-primary font-extrabold">{formatRupiah(p.discount_price)}</span>
-                              <span className="text-gray-400 text-xs font-semibold line-through">{formatRupiah(p.price)}</span>
+                              <span className="text-gray-400 dark:text-muted-foreground text-xs font-semibold line-through">{formatRupiah(p.price)}</span>
                             </div>
                           ) : (
                             <span>{formatRupiah(p.price)}</span>
@@ -313,18 +313,18 @@ export default function ProductsPage() {
                         </td>
                         <td className="px-6 py-4">
                           <span className={`inline-flex px-2 py-0.5 text-xs font-bold rounded-lg border ${
-                            p.stock < 5 ? "bg-rose-50 text-rose-600 border-rose-100" : "bg-gray-50 text-gray-600 border-gray-150"
+                            p.stock < 5 ? "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-500/20" : "bg-gray-50 dark:bg-muted text-gray-600 dark:text-muted-foreground border-gray-150 dark:border-border"
                           }`}>
                             {p.stock}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           {p.is_active ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-green-50 text-green-650 border border-green-100 rounded-lg">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-green-50 dark:bg-green-500/10 text-green-650 dark:text-green-400 border border-green-100 dark:border-green-500/20 rounded-lg">
                               <Eye className="w-3.5 h-3.5" /> Aktif
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-gray-50 text-gray-500 border border-gray-150 rounded-lg">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-gray-50 dark:bg-muted text-gray-500 dark:text-muted-foreground border border-gray-150 dark:border-border rounded-lg">
                               <EyeOff className="w-3.5 h-3.5" /> Sembunyi
                             </span>
                           )}
@@ -333,13 +333,13 @@ export default function ProductsPage() {
                           <div className="inline-flex items-center gap-1">
                             <button
                               onClick={() => handleOpenEdit(p)}
-                              className="p-2 text-gray-500 hover:text-primary hover:bg-pink-50/40 rounded-xl transition-all cursor-pointer"
+                              className="p-2 text-gray-500 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/40 dark:hover:bg-primary/10 rounded-xl transition-all cursor-pointer"
                             >
                               <Edit className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDelete(p.id)}
-                              className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50/40 rounded-xl transition-all cursor-pointer"
+                              className="p-2 text-gray-500 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50/40 dark:hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -350,7 +350,7 @@ export default function ProductsPage() {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400 text-xs font-semibold">
+                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400 dark:text-muted-foreground text-xs font-semibold">
                       Tidak ada produk ditemukan.
                     </td>
                   </tr>
@@ -377,15 +377,15 @@ export default function ProductsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-lg rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
+              className="bg-white dark:bg-card w-full max-w-lg rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">
                   {modalMode === "create" ? "Tambah Produk Baru" : "Edit Produk"}
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -394,24 +394,24 @@ export default function ProductsPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Nama Produk</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Nama Produk</label>
                     <input
                       type="text"
                       required
                       placeholder="Contoh: Buket Mawar Pink"
                       value={formName}
                       onChange={(e) => setFormName(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Kategori</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Kategori</label>
                     <select
                       required
                       value={formCategoryId}
                       onChange={(e) => setFormCategoryId(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-bold text-gray-700 cursor-pointer shadow-sm custom-select"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select"
                     >
                       {categories.map((cat) => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -422,7 +422,7 @@ export default function ProductsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Harga (Rupiah)</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Harga (Rupiah)</label>
                     <input
                       type="number"
                       required
@@ -430,26 +430,26 @@ export default function ProductsPage() {
                       placeholder="Rp"
                       value={formPrice}
                       onChange={(e) => setFormPrice(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Harga Diskon (Optional)</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Harga Diskon (Optional)</label>
                     <input
                       type="number"
                       min="0"
                       placeholder="Rp"
                       value={formDiscountPrice}
                       onChange={(e) => setFormDiscountPrice(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Stok</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Stok</label>
                     <input
                       type="number"
                       required
@@ -457,30 +457,30 @@ export default function ProductsPage() {
                       placeholder="0"
                       value={formStock}
                       onChange={(e) => setFormStock(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">URL Foto Produk (Optional)</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">URL Foto Produk (Optional)</label>
                   <input
                     type="url"
                     placeholder="https://example.com/foto.jpg"
                     value={formImageUrl}
                     onChange={(e) => setFormImageUrl(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Deskripsi Produk (Optional)</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Deskripsi Produk (Optional)</label>
                   <textarea
                     rows={3}
                     placeholder="Tulis deskripsi singkat atau detail bunga buket..."
                     value={formDescription}
                     onChange={(e) => setFormDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                   />
                 </div>
 
@@ -492,16 +492,16 @@ export default function ProductsPage() {
                     onChange={(e) => setFormIsActive(e.target.checked)}
                     className="w-4.5 h-4.5 rounded-lg border-gray-350 accent-primary cursor-pointer"
                   />
-                  <label htmlFor="formIsActive" className="text-xs font-bold text-gray-650 cursor-pointer select-none">
+                  <label htmlFor="formIsActive" className="text-xs font-bold text-gray-650 dark:text-muted-foreground cursor-pointer select-none">
                     Tampilkan produk di halaman depan toko (Aktif)
                   </label>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-border">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                    className="px-5 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                   >
                     Batal
                   </button>

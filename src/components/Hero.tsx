@@ -2,38 +2,47 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
+import { useTheme } from "@/lib/theme";
 
 export default function Hero() {
+  const { theme } = useTheme();
   // Hardcoded random positions for aesthetic petals to avoid hydration mismatch
   const petals = [
-    { id: 1, size: "w-3 h-3", left: "10%", top: "20%", delay: 0, duration: 4, color: "bg-pink-300" },
-    { id: 2, size: "w-2 h-2", left: "85%", top: "15%", delay: 1, duration: 5, color: "bg-purple-300" },
-    { id: 3, size: "w-4 h-4", left: "25%", top: "70%", delay: 2, duration: 6, color: "bg-pink-400" },
-    { id: 4, size: "w-2 h-2", left: "75%", top: "60%", delay: 0.5, duration: 4.5, color: "bg-white" },
-    { id: 5, size: "w-3 h-3", left: "50%", top: "10%", delay: 1.5, duration: 5.5, color: "bg-pink-300" },
-    { id: 6, size: "w-2 h-2", left: "90%", top: "80%", delay: 3, duration: 4, color: "bg-purple-200" },
-    { id: 7, size: "w-3 h-3", left: "15%", top: "45%", delay: 2.5, duration: 5, color: "bg-white" },
-    { id: 8, size: "w-4 h-4", left: "65%", top: "30%", delay: 1, duration: 6, color: "bg-pink-500" },
-    { id: 9, size: "w-2 h-2", left: "5%", top: "85%", delay: 0, duration: 4.5, color: "bg-purple-300" },
-    { id: 10, size: "w-3 h-3", left: "40%", top: "85%", delay: 2, duration: 5, color: "bg-pink-300" },
-    { id: 11, size: "w-2 h-2", left: "80%", top: "40%", delay: 1.5, duration: 5.5, color: "bg-white" },
-    { id: 12, size: "w-3 h-3", left: "30%", top: "30%", delay: 0.5, duration: 4, color: "bg-purple-400" },
+    { id: 1, size: "w-3 h-3", left: "10%", top: "20%", delay: 0, duration: 4, color: "bg-pink-300 dark:bg-secondary" },
+    { id: 2, size: "w-2 h-2", left: "85%", top: "15%", delay: 1, duration: 5, color: "bg-purple-300 dark:bg-secondary" },
+    { id: 3, size: "w-4 h-4", left: "25%", top: "70%", delay: 2, duration: 6, color: "bg-pink-400 dark:bg-primary" },
+    { id: 4, size: "w-2 h-2", left: "75%", top: "60%", delay: 0.5, duration: 4.5, color: "bg-white dark:bg-card" },
+    { id: 5, size: "w-3 h-3", left: "50%", top: "10%", delay: 1.5, duration: 5.5, color: "bg-pink-300 dark:bg-secondary" },
+    { id: 6, size: "w-2 h-2", left: "90%", top: "80%", delay: 3, duration: 4, color: "bg-purple-200 dark:bg-secondary" },
+    { id: 7, size: "w-3 h-3", left: "15%", top: "45%", delay: 2.5, duration: 5, color: "bg-white dark:bg-card" },
+    { id: 8, size: "w-4 h-4", left: "65%", top: "30%", delay: 1, duration: 6, color: "bg-pink-500 dark:bg-primary" },
+    { id: 9, size: "w-2 h-2", left: "5%", top: "85%", delay: 0, duration: 4.5, color: "bg-purple-300 dark:bg-secondary" },
+    { id: 10, size: "w-3 h-3", left: "40%", top: "85%", delay: 2, duration: 5, color: "bg-pink-300 dark:bg-secondary" },
+    { id: 11, size: "w-2 h-2", left: "80%", top: "40%", delay: 1.5, duration: 5.5, color: "bg-white dark:bg-card" },
+    { id: 12, size: "w-3 h-3", left: "30%", top: "30%", delay: 0.5, duration: 4, color: "bg-purple-400 dark:bg-secondary" },
   ];
 
   return (
     <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-primary/20">
-      {/* Pink Cloud Background from Unsplash */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-20 opacity-60"
-        style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop")',
+      {/* Theme-aware background photo, cross-faded smoothly on light/dark switch */}
+      <div
+        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-60 transition-opacity duration-700 ease-in-out"
+        style={{
+          backgroundImage: 'url("/bg%20light.webp")',
+          opacity: theme === "dark" ? 0 : 0.6,
         }}
       />
-      
-      {/* Pink Gradient to White Fade */}
-      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent z-0" />
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/30 to-transparent -z-10 mix-blend-multiply" />
+      <div
+        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-60 transition-opacity duration-700 ease-in-out"
+        style={{
+          backgroundImage: 'url("/bg%20night.webp")',
+          opacity: theme === "dark" ? 0.6 : 0,
+        }}
+      />
+
+      {/* Fade to page background */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-background via-white/70 dark:via-background/70 to-transparent z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/30 to-transparent dark:from-background/40 -z-10 mix-blend-multiply dark:mix-blend-normal" />
 
       {/* Floating Petals/Dots Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -66,11 +75,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 leading-tight mb-8">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 dark:text-foreground leading-tight mb-8">
               Send <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Happiness</span> <br/>
               in Every Bloom
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-2xl mx-auto font-medium">
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-muted-foreground mb-10 max-w-2xl mx-auto font-medium">
               Beautiful handcrafted flower buckets for every moment. We carefully select the freshest flowers to express your feelings perfectly.
             </p>
             <motion.div 

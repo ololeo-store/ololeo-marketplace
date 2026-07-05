@@ -127,15 +127,15 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-8 font-sans">
-      <div className="bg-white rounded-3xl border border-gray-200/60 shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
+      <div className="bg-white dark:bg-card rounded-3xl border border-gray-200/60 dark:border-border shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="p-3 rounded-2xl bg-pink-50 text-secondary">
+            <span className="p-3 rounded-2xl bg-pink-50 dark:bg-primary/10 text-secondary">
               <FolderTree className="w-6 h-6" />
             </span>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Kategori Produk</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Kelola kategori pengelompokkan jenis bunga dan buket</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Kategori Produk</h3>
+              <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Kelola kategori pengelompokkan jenis bunga dan buket</p>
             </div>
           </div>
           <button
@@ -149,56 +149,56 @@ export default function CategoriesPage() {
 
         {/* Search Input */}
         <div className="max-w-md relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-muted-foreground w-4 h-4" />
           <input
             type="text"
             placeholder="Cari kategori..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
           />
         </div>
 
         {/* Table representation */}
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Memuat kategori...</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-gray-100">
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-border">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/70 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50/70 dark:bg-muted text-gray-400 dark:text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-gray-100 dark:border-border">
                   <th className="px-6 py-4">Nama Kategori</th>
                   <th className="px-6 py-4">Slug</th>
                   <th className="px-6 py-4">Deskripsi</th>
                   <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="text-sm font-medium text-gray-700 divide-y divide-gray-100">
+              <tbody className="text-sm font-medium text-gray-700 dark:text-muted-foreground divide-y divide-gray-100 dark:divide-border">
                 {filteredCategories.length > 0 ? (
                   filteredCategories.map((c) => (
-                    <tr key={c.id} className="hover:bg-gray-50/20 transition-colors">
-                      <td className="px-6 py-4.5 font-bold text-gray-800">{c.name}</td>
-                      <td className="px-6 py-4.5 text-xs font-mono text-gray-500">{c.slug}</td>
+                    <tr key={c.id} className="hover:bg-gray-50/20 dark:hover:bg-muted transition-colors">
+                      <td className="px-6 py-4.5 font-bold text-gray-800 dark:text-foreground">{c.name}</td>
+                      <td className="px-6 py-4.5 text-xs font-mono text-gray-500 dark:text-muted-foreground">{c.slug}</td>
                       <td className="px-6 py-4.5 text-xs text-gray-550 max-w-sm truncate">{c.description || "-"}</td>
                       <td className="px-6 py-4.5 text-right">
                         <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => handleOpenEdit(c)}
-                            className="p-2 text-gray-500 hover:text-primary hover:bg-pink-50/40 rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-gray-500 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/40 dark:hover:bg-primary/10 rounded-xl transition-all cursor-pointer"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(c.id)}
-                            className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50/40 rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-gray-500 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50/40 dark:hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -208,7 +208,7 @@ export default function CategoriesPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center text-gray-400 text-xs font-semibold">
+                    <td colSpan={4} className="px-6 py-12 text-center text-gray-400 dark:text-muted-foreground text-xs font-semibold">
                       Tidak ada kategori ditemukan.
                     </td>
                   </tr>
@@ -235,15 +235,15 @@ export default function CategoriesPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-md rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
+              className="bg-white dark:bg-card w-full max-w-md rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-800">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">
                   {modalMode === "create" ? "Tambah Kategori Baru" : "Edit Kategori"}
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -251,33 +251,33 @@ export default function CategoriesPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Nama Kategori</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Nama Kategori</label>
                   <input
                     type="text"
                     required
                     placeholder="Contoh: Buket Mawar, Bunga Papan"
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Deskripsi Kategori</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Deskripsi Kategori</label>
                   <textarea
                     rows={4}
                     placeholder="Masukkan deskripsi singkat kategori ini..."
                     value={formDescription}
                     onChange={(e) => setFormDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-border">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-5 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                    className="px-5 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                   >
                     Batal
                   </button>

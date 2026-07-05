@@ -12,7 +12,7 @@ const galleryImages = [
 
 export default function GallerySection() {
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-24 bg-white dark:bg-card overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -21,10 +21,10 @@ export default function GallerySection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4">
             Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Gallery</span>
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto text-lg">
             A glimpse into our beautiful creations designed to bring joy.
           </p>
         </motion.div>

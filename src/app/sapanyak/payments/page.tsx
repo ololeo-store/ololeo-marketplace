@@ -162,19 +162,19 @@ export default function PaymentsPage() {
       case "success":
       case "settlement":
         return (
-          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-green-50 text-green-650 border border-green-100 rounded-lg shrink-0">
+          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-green-50 dark:bg-green-500/10 text-green-650 dark:text-green-400 border border-green-100 dark:border-green-500/20 rounded-lg shrink-0">
             Success
           </span>
         );
       case "pending":
         return (
-          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100 rounded-lg shrink-0">
+          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20 rounded-lg shrink-0">
             Pending
           </span>
         );
       default:
         return (
-          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-rose-50 text-rose-650 border border-rose-100 rounded-lg shrink-0">
+          <span className="inline-flex px-2.5 py-1 text-xs font-bold bg-rose-50 dark:bg-rose-500/10 text-rose-650 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20 rounded-lg shrink-0">
             Failed
           </span>
         );
@@ -194,15 +194,15 @@ export default function PaymentsPage() {
 
   return (
     <div className="space-y-8 font-sans">
-      <div className="bg-white rounded-3xl border border-gray-200/60 shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
+      <div className="bg-white dark:bg-card rounded-3xl border border-gray-200/60 dark:border-border shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="p-3 rounded-2xl bg-pink-50 text-primary">
+            <span className="p-3 rounded-2xl bg-pink-50 dark:bg-primary/10 text-primary">
               <Receipt className="w-6 h-6" />
             </span>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Catatan Pembayaran</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Kelola verifikasi pembayaran masuk dari payment gateway</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Catatan Pembayaran</h3>
+              <p className="text-gray-400 dark:text-muted-foreground text-xs mt-0.5">Kelola verifikasi pembayaran masuk dari payment gateway</p>
             </div>
           </div>
           <button
@@ -215,15 +215,15 @@ export default function PaymentsPage() {
         </div>
 
         {/* Search & Status Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-150/50">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50/50 dark:bg-muted p-4 rounded-2xl border border-gray-150/50 dark:border-border">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-muted-foreground w-4 h-4" />
             <input
               type="text"
               placeholder="Cari transaksi, ID order, tipe..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 shadow-sm"
+              className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs transition-all font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
             />
           </div>
 
@@ -231,7 +231,7 @@ export default function PaymentsPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select transition-all"
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-card border border-gray-200 dark:border-border focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select transition-all"
             >
               <option value="all">Semua Status Bayar</option>
               <option value="success">Success</option>
@@ -243,20 +243,20 @@ export default function PaymentsPage() {
 
         {/* Payments Table */}
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450">
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-450 dark:text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs font-semibold">Memuat transaksi pembayaran...</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center text-red-500 font-semibold max-w-md mx-auto">
+          <div className="py-12 text-center text-red-500 dark:text-red-400 font-semibold max-w-md mx-auto">
             <AlertCircle className="w-10 h-10 mx-auto mb-3" />
             <p>{error}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-gray-100">
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 dark:border-border">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/70 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                <tr className="bg-gray-50/70 dark:bg-muted text-gray-400 dark:text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-gray-100 dark:border-border">
                   <th className="px-6 py-4">Transaction ID</th>
                   <th className="px-6 py-4">ID Order</th>
                   <th className="px-6 py-4">Nominal</th>
@@ -266,16 +266,16 @@ export default function PaymentsPage() {
                   <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="text-sm font-medium text-gray-700 divide-y divide-gray-100">
+              <tbody className="text-sm font-medium text-gray-700 dark:text-muted-foreground divide-y divide-gray-100 dark:divide-border">
                 {filteredPayments.length > 0 ? (
                   filteredPayments.map((p) => (
-                    <tr key={p.id} className="hover:bg-gray-50/20 transition-colors">
-                      <td className="px-6 py-4.5 font-bold text-gray-800">{p.transaction_id}</td>
-                      <td className="px-6 py-4.5 text-xs text-gray-500 font-mono select-all">{p.order_id}</td>
-                      <td className="px-6 py-4.5 font-extrabold text-gray-900">{formatRupiah(p.amount)}</td>
-                      <td className="px-6 py-4.5 uppercase font-bold text-gray-650 text-xs">{p.payment_type}</td>
+                    <tr key={p.id} className="hover:bg-gray-50/20 dark:hover:bg-muted transition-colors">
+                      <td className="px-6 py-4.5 font-bold text-gray-800 dark:text-foreground">{p.transaction_id}</td>
+                      <td className="px-6 py-4.5 text-xs text-gray-500 dark:text-muted-foreground font-mono select-all">{p.order_id}</td>
+                      <td className="px-6 py-4.5 font-extrabold text-gray-900 dark:text-foreground">{formatRupiah(p.amount)}</td>
+                      <td className="px-6 py-4.5 uppercase font-bold text-gray-650 dark:text-muted-foreground text-xs">{p.payment_type}</td>
                       <td className="px-6 py-4.5">{getStatusBadge(p.status)}</td>
-                      <td className="px-6 py-4.5 text-xs text-gray-400">
+                      <td className="px-6 py-4.5 text-xs text-gray-400 dark:text-muted-foreground">
                         {new Date(p.created_at).toLocaleDateString("id-ID", {
                           day: "numeric",
                           month: "short",
@@ -286,14 +286,14 @@ export default function PaymentsPage() {
                         <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => handleOpenDetail(p)}
-                            className="p-2.5 bg-gray-50 text-gray-600 hover:text-primary hover:bg-pink-50/40 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold"
+                            className="p-2.5 bg-gray-50 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:text-primary hover:bg-pink-50/40 dark:hover:bg-primary/10 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>Payload</span>
                           </button>
                           <button
                             onClick={() => handleDelete(p.id)}
-                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50/40 rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-gray-400 dark:text-muted-foreground hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50/40 dark:hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -303,7 +303,7 @@ export default function PaymentsPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400 text-xs font-semibold">
+                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400 dark:text-muted-foreground text-xs font-semibold">
                       Tidak ada catatan pembayaran ditemukan.
                     </td>
                   </tr>
@@ -330,16 +330,16 @@ export default function PaymentsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-2xl rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 max-h-[85vh] flex flex-col gap-6"
+              className="bg-white dark:bg-card w-full max-w-2xl rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 max-h-[85vh] flex flex-col gap-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4 shrink-0">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4 shrink-0">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800">Raw Payload Inspector</h3>
-                  <p className="text-[10px] font-mono text-gray-400 mt-0.5">Trx ID: {selectedPayment.transaction_id}</p>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Raw Payload Inspector</h3>
+                  <p className="text-[10px] font-mono text-gray-400 dark:text-muted-foreground mt-0.5">Trx ID: {selectedPayment.transaction_id}</p>
                 </div>
                 <button
                   onClick={() => setIsDetailOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -347,8 +347,8 @@ export default function PaymentsPage() {
 
               {/* JSON Prettifier */}
               <div className="flex-1 overflow-y-auto rounded-2xl bg-gray-900 p-5 font-mono text-xs text-green-400 border border-gray-800 scrollbar-thin select-all leading-relaxed min-h-[300px]">
-                <div className="flex items-center gap-2 border-b border-gray-850 pb-3 mb-4 shrink-0 text-[10px] text-gray-450 font-bold uppercase tracking-wider">
-                  <Code className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 border-b border-gray-850 pb-3 mb-4 shrink-0 text-[10px] text-gray-450 dark:text-muted-foreground font-bold uppercase tracking-wider">
+                  <Code className="w-4 h-4 text-gray-400 dark:text-muted-foreground" />
                   <span>Gateway Response JSON</span>
                 </div>
                 <pre className="whitespace-pre-wrap">
@@ -366,7 +366,7 @@ export default function PaymentsPage() {
                 <button
                   type="button"
                   onClick={() => setIsDetailOpen(false)}
-                  className="px-6 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                  className="px-6 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                 >
                   Tutup Inspector
                 </button>
@@ -392,13 +392,13 @@ export default function PaymentsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-lg rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
+              className="bg-white dark:bg-card w-full max-w-lg rounded-3xl border border-gray-100 dark:border-border shadow-2xl p-6 md:p-8 relative z-10 space-y-6"
             >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-800">Record Pembayaran Manual</h3>
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-border pb-4">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-foreground">Record Pembayaran Manual</h3>
                 <button
                   onClick={() => setIsCreateOpen(false)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-xl transition-colors cursor-pointer"
+                  className="p-1.5 text-gray-400 dark:text-muted-foreground hover:text-gray-600 dark:hover:text-muted-foreground rounded-xl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -406,7 +406,7 @@ export default function PaymentsPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Pilih Order ID</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Pilih Order ID</label>
                   <select
                     required
                     value={formOrderId}
@@ -416,7 +416,7 @@ export default function PaymentsPage() {
                       const selected = orders.find((o) => o.id === e.target.value);
                       if (selected) setFormAmount(selected.total_price.toString());
                     }}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select"
                   >
                     {orders.filter(o => o.id).map((o) => (
                       <option key={o.id} value={o.id}>
@@ -428,22 +428,22 @@ export default function PaymentsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Transaction ID</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Transaction ID</label>
                     <input
                       type="text"
                       required
                       value={formTrxId}
                       onChange={(e) => setFormTrxId(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Tipe Pembayaran</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Tipe Pembayaran</label>
                     <select
                       value={formType}
                       onChange={(e) => setFormType(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select"
                     >
                       <option value="bank_transfer">Transfer Bank</option>
                       <option value="cash">Cash / Tunai</option>
@@ -454,7 +454,7 @@ export default function PaymentsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Nominal Bayar</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Nominal Bayar</label>
                     <input
                       type="number"
                       required
@@ -462,16 +462,16 @@ export default function PaymentsPage() {
                       placeholder="Rp"
                       value={formAmount}
                       onChange={(e) => setFormAmount(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-semibold text-gray-700 shadow-sm"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-semibold text-gray-700 dark:text-muted-foreground shadow-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Status</label>
+                    <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Status</label>
                     <select
                       value={formStatus}
                       onChange={(e) => setFormStatus(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 cursor-pointer shadow-sm custom-select"
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-bold text-gray-700 dark:text-muted-foreground cursor-pointer shadow-sm custom-select"
                     >
                       <option value="success">Success</option>
                       <option value="pending">Pending</option>
@@ -481,20 +481,20 @@ export default function PaymentsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-455 uppercase tracking-wider">Raw Payload / Catatan JSON</label>
+                  <label className="text-xs font-bold text-gray-455 dark:text-muted-foreground uppercase tracking-wider">Raw Payload / Catatan JSON</label>
                   <textarea
                     rows={3}
                     value={formRawPayload}
                     onChange={(e) => setFormRawPayload(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-mono text-gray-700 shadow-sm resize-none"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl outline-none text-xs font-mono text-gray-700 dark:text-muted-foreground shadow-sm resize-none"
                   />
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-border">
                   <button
                     type="button"
                     onClick={() => setIsCreateOpen(false)}
-                    className="px-5 py-3.5 bg-gray-100 text-gray-600 hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
+                    className="px-5 py-3.5 bg-gray-100 dark:bg-muted text-gray-600 dark:text-muted-foreground hover:bg-gray-150 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                   >
                     Batal
                   </button>

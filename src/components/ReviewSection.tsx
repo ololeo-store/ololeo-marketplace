@@ -26,7 +26,7 @@ const reviews = [
 
 export default function ReviewSection() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden" id="reviews">
+    <section className="py-24 bg-white dark:bg-card relative overflow-hidden" id="reviews">
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,10 +35,10 @@ export default function ReviewSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4">
             What Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Customers</span> Say
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto text-lg">
             Don't just take our word for it. Here's what people love about our flower buckets.
           </p>
         </motion.div>
@@ -51,19 +51,19 @@ export default function ReviewSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="bg-gradient-to-br from-white to-primary/5 p-8 rounded-3xl shadow-sm border border-primary/10 hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-white to-primary/5 dark:bg-none dark:bg-card p-8 rounded-3xl shadow-sm border border-primary/10 hover:shadow-md transition-shadow"
             >
               <div className="flex gap-1 mb-4 text-yellow-400">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-700 italic mb-6">"{review.comment}"</p>
+              <p className="text-gray-700 dark:text-muted-foreground italic mb-6">"{review.comment}"</p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">
                   {review.name.charAt(0)}
                 </div>
-                <h4 className="font-semibold text-gray-900">{review.name}</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-foreground">{review.name}</h4>
               </div>
             </motion.div>
           ))}
