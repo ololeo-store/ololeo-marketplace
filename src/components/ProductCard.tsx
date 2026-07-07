@@ -69,8 +69,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Discount badge */}
           {hasDiscount && (
             <div className="absolute top-2.5 right-2.5 md:top-3 md:right-3">
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] md:text-[11px] font-extrabold bg-rose-500 text-white shadow-sm">
-                -{discountPercent}%
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-extrabold bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-sm">
+                {discountPercent}% Off
               </span>
             </div>
           )}
@@ -83,12 +83,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           </h3>
           {hasDiscount ? (
             <div className="mt-1 flex items-center gap-2 flex-wrap">
+              <p className="text-base md:text-lg font-extrabold text-red-600 dark:text-red-500">
+                <span translate="no">Rp {product.discountPrice!.toLocaleString("id-ID")}</span>
+              </p>
               <span className="text-xs md:text-sm font-semibold text-gray-400 dark:text-muted-foreground line-through">
                 <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
               </span>
-              <p className="text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">
-                <span translate="no">Rp {product.discountPrice!.toLocaleString("id-ID")}</span>
-              </p>
             </div>
           ) : (
             <p className="mt-1 text-base md:text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 dark:from-secondary to-purple-400 dark:to-primary">

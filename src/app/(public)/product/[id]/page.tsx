@@ -152,6 +152,9 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
   const hasDiscount =
     typeof product.discountPrice === "number" && product.discountPrice > 0 && product.discountPrice < product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.price - product.discountPrice!) / product.price) * 100)
+    : 0;
   const cartProduct = hasDiscount ? { ...product, price: product.discountPrice! } : product;
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -270,17 +273,23 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             </h1>
 
             <div className="flex items-center gap-3 flex-wrap mb-8">
+              {hasDiscount ? (
+                <div className="text-3xl lg:text-4xl font-extrabold text-red-600 dark:text-red-500 inline-block">
+                  <span translate="no">Rp {product.discountPrice!.toLocaleString("id-ID")}</span>
+                </div>
+              ) : (
+                <div className="text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary inline-block">
+                  <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
+                </div>
+              )}
               {hasDiscount && (
                 <span className="text-lg lg:text-xl font-semibold text-gray-400 dark:text-muted-foreground line-through">
                   <span translate="no">Rp {product.price.toLocaleString("id-ID")}</span>
                 </span>
               )}
-              <div className="text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary inline-block">
-                <span translate="no">Rp {(hasDiscount ? product.discountPrice! : product.price).toLocaleString("id-ID")}</span>
-              </div>
               {hasDiscount && (
-                <span className="px-2.5 py-1 rounded-full text-xs font-extrabold bg-rose-500 text-white">
-                  -{Math.round(((product.price - product.discountPrice!) / product.price) * 100)}%
+                <span className="px-2.5 py-1 rounded-full text-xs font-extrabold bg-gradient-to-r from-pink-500 to-purple-500 text-white">
+                  {discountPercent}% Off
                 </span>
               )}
             </div>
@@ -382,14 +391,19 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
           <div className="flex flex-col gap-1">
             <span className="text-xs text-gray-400 dark:text-muted-foreground font-medium uppercase tracking-wide">Price</span>
             <div className="flex items-center gap-2 flex-wrap">
+              <span className={hasDiscount ? "text-2xl font-bold text-red-600 dark:text-red-500" : "text-2xl font-bold text-gray-900 dark:text-foreground"}>
+                Rp {(hasDiscount ? product.discountPrice! : product.price).toLocaleString("id-ID")}
+              </span>
               {hasDiscount && (
                 <span className="text-sm font-semibold text-gray-400 dark:text-muted-foreground line-through">
                   Rp {product.price.toLocaleString("id-ID")}
                 </span>
               )}
-              <span className="text-2xl font-bold text-gray-900 dark:text-foreground">
-                Rp {(hasDiscount ? product.discountPrice! : product.price).toLocaleString("id-ID")}
-              </span>
+              {hasDiscount && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-gradient-to-r from-pink-500 to-purple-500 text-white">
+                  {discountPercent}% Off
+                </span>
+              )}
             </div>
           </div>
 
