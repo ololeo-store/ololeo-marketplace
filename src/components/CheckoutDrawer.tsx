@@ -521,10 +521,12 @@ function CustomCalendar({ selectedDate, onSelect }: { selectedDate: Date | null,
            today.getFullYear() === currentMonth.getFullYear();
   };
   const isPastDate = (day: number) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Preorder system — earliest pickup is order date + 4 days, same rule as Kasir.
+    const minDate = new Date();
+    minDate.setHours(0, 0, 0, 0);
+    minDate.setDate(minDate.getDate() + 4);
     const dateToCheck = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    return dateToCheck < today;
+    return dateToCheck < minDate;
   };
   const todayDate = new Date();
   const isPrevMonthDisabled = currentMonth.getFullYear() < todayDate.getFullYear() || 
