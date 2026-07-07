@@ -158,7 +158,7 @@ export default function Shop() {
                 placeholder="Cari buket kesukaanmu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-border bg-white dark:bg-card focus:bg-white focus:outline-none focus:border-pink-300 focus:ring-2 focus:ring-pink-100 transition-all text-sm font-medium"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-border bg-white dark:bg-card focus:bg-white dark:focus:bg-card focus:outline-none focus:border-pink-300 dark:focus:border-primary/40 focus:ring-2 focus:ring-pink-100 dark:focus:ring-primary/20 transition-all text-sm font-medium text-gray-900 dark:text-foreground placeholder:text-gray-400 dark:placeholder:text-muted-foreground"
               />
             </div>
             <div className="relative w-full sm:w-48" data-sort-dropdown>
