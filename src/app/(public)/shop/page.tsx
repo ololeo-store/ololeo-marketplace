@@ -135,7 +135,7 @@ export default function Shop() {
               </span>
             </h1>
             <p className="text-gray-500 dark:text-muted-foreground max-w-xl mx-auto text-sm md:text-base leading-relaxed">
-              Handcrafted with love untuk setiap momen spesialmu 🌸
+              Handcrafted with love untuk setiap momen spesialmu ≽^•⩊•^≼
             </p>
           </motion.div>
         </div>
@@ -318,7 +318,7 @@ export default function Shop() {
         {!isLoading && recommendations.length > 0 && (
           <section className="mt-20 pt-12 border-t border-gray-100 dark:border-border">
             <h2 className="text-2xl font-extrabold text-gray-900 dark:text-foreground mb-8 flex items-center gap-2">
-              <span>✨</span> Rekomendasi Untukmu
+              <span>╰┈➤</span> Rekomendasi Untukmu
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {recommendations.map((product) => (

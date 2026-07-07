@@ -3,6 +3,7 @@ import "./globals.css";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { ThemeProvider } from "@/lib/theme";
 import { ThemeTransitionProvider } from "@/components/ThemeTransition";
+import { ConfirmDialogProvider } from "@/hooks/useConfirmDialog";
 
 export const metadata: Metadata = {
   title: "Ololeo Bucket",
@@ -24,8 +25,10 @@ export default function RootLayout({
       <body className="font-sans antialiased flex flex-col min-h-screen bg-background text-foreground">
         <ThemeProvider>
           <ThemeTransitionProvider>
-            <AnalyticsTracker />
-            {children}
+            <ConfirmDialogProvider>
+              <AnalyticsTracker />
+              {children}
+            </ConfirmDialogProvider>
           </ThemeTransitionProvider>
         </ThemeProvider>
       </body>

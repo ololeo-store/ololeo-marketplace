@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X, LogOut, User } from "lucide-react";
 import { useCart } from "@/store/useCart";
 import { useAuth } from "@/store/useAuth";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/lib/theme";
 import CartDrawer from "@/components/CartDrawer";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -16,6 +18,7 @@ export default function Navbar() {
   const totalItems = useCart((state) => state.totalItems());
   const { isOpen: isCartOpen, setIsOpen: setIsCartOpen } = useCart();
   const { customer, logout, hydrate, isLoading } = useAuth();
+  const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -44,11 +47,15 @@ export default function Navbar() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between h-16 md:h-[68px]">
             {/* Logo */}
-            <Link
-              href="/"
-              className="text-xl md:text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400 tracking-tight"
-            >
-              Ololeo Store
+            <Link href="/" className="flex items-center">
+              <Image
+                src={mounted && theme === "dark" ? "/dark logo.png" : "/light logo.png"}
+                alt="Ololeo Store"
+                width={1920}
+                height={1080}
+                priority
+                className="h-9 md:h-10 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop Nav */}
