@@ -298,6 +298,23 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <p className="leading-relaxed">{product.description}</p>
             </div>
 
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-3 bg-gray-100/60 dark:bg-muted backdrop-blur-sm p-1.5 rounded-full border border-gray-200 dark:border-border w-fit mb-6">
+              <button
+                onClick={() => handleUpdateQuantity(product.id, quantity - 1)}
+                className="w-10 h-10 rounded-full bg-white dark:bg-card shadow-sm flex items-center justify-center text-gray-600 dark:text-muted-foreground active:scale-95 transition-transform"
+              >
+                <Minus className="w-4 h-4" />
+              </button>
+              <span className="w-8 text-center font-bold text-gray-800 dark:text-foreground text-base">{quantity}</span>
+              <button
+                onClick={() => handleUpdateQuantity(product.id, quantity + 1)}
+                className="w-10 h-10 rounded-full bg-secondary/15 text-secondary flex items-center justify-center active:scale-95 transition-transform hover:bg-secondary hover:text-white"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+
             <div className="flex flex-row gap-3 md:gap-4 mt-8">
               <button
                 onClick={handleAddToCart}
@@ -324,6 +341,22 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               </button>
             </div>
           </motion.div>
+        </div>
+
+        {/* You May Like */}
+        <div className="mt-20 mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-6">You May Like</h2>
+          {relatedProducts.length > 0 ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-400 dark:text-muted-foreground italic">
+              Belum ada produk lain di kategori ini.
+            </p>
+          )}
         </div>
       </div>
 
@@ -415,17 +448,21 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             </div>
           </div>
 
-          {/* Related Products */}
-          {relatedProducts.length > 0 && (
-            <div className="flex flex-col gap-3">
-              <span className="text-xs font-bold text-primary/80 uppercase tracking-widest">Rekomendasi Produk</span>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* You May Like */}
+          <div className="flex flex-col gap-3">
+            <span className="text-xs font-bold text-primary/80 uppercase tracking-widest">You May Like</span>
+            {relatedProducts.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4">
                 {relatedProducts.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <p className="text-sm text-gray-400 dark:text-muted-foreground italic">
+                Belum ada produk lain di kategori ini.
+              </p>
+            )}
+          </div>
 
           {/* Back to Shop Link */}
           <div className="flex justify-center mt-2 pb-4">

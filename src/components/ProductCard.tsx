@@ -68,7 +68,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
           {/* Discount badge */}
           {hasDiscount && (
-            <div className="absolute top-2.5 right-2.5 md:top-3 md:right-3">
+            <div className="absolute bottom-4 left-4">
               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-extrabold bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-sm">
                 {discountPercent}% Off
               </span>
@@ -83,7 +83,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </h3>
           {hasDiscount ? (
             <div className="mt-1 flex items-center gap-2 flex-wrap">
-              <p className="text-base md:text-lg font-extrabold text-red-600 dark:text-red-500">
+              <p className="text-base md:text-lg font-extrabold text-pink-500 dark:text-primary">
                 <span translate="no">Rp {product.discountPrice!.toLocaleString("id-ID")}</span>
               </p>
               <span className="text-xs md:text-sm font-semibold text-gray-400 dark:text-muted-foreground line-through">
