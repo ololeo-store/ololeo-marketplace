@@ -12,10 +12,13 @@ import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
 
 import CheckoutDrawer from "@/components/CheckoutDrawer";
+import ProductCard from "@/components/ProductCard";
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
   const [product, setProduct] = useState<Product | null>(null);
+  const [categoryId, setCategoryId] = useState<string | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
@@ -41,6 +44,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             category: res.category?.name || "Uncategorized",
             description: res.description || "",
           });
+          setCategoryId(res.category?.id || null);
         } else {
           // Fallback to static
           const staticP = staticProducts.find((p) => p.id === unwrappedParams.id);
@@ -56,6 +60,34 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     }
     loadProduct();
   }, [unwrappedParams.id]);
+
+  useEffect(() => {
+    if (!categoryId) return;
+    async function loadRelated() {
+      try {
+        const res = await api.getProducts({ categoryId: categoryId!, excludeId: unwrappedParams.id, limit: 4 });
+        const mapped = (res?.data || []).map((p) => {
+          const firstImage = p.galleries?.[0]?.imageUrl;
+          return {
+            id: p.id,
+            name: p.name,
+            price: typeof p.price === "string" ? parseFloat(p.price) : p.price,
+            discountPrice:
+              p.discountPrice !== null && p.discountPrice !== undefined
+                ? typeof p.discountPrice === "string" ? parseFloat(p.discountPrice) : p.discountPrice
+                : null,
+            image: firstImage || "/placeholder.svg",
+            category: p.category?.name || "Uncategorized",
+            description: p.description || "",
+          };
+        });
+        setRelatedProducts(mapped);
+      } catch (err) {
+        setRelatedProducts([]);
+      }
+    }
+    loadRelated();
+  }, [categoryId, unwrappedParams.id]);
 
   // Mobile layout state variables
   const colors = ["#d6bcfd", "#7dd3fc", "#f472b6", "#fed7aa"]; // Purple, Blue, Pink, Apricot
@@ -368,6 +400,18 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <p className="text-sm leading-relaxed text-gray-600 dark:text-muted-foreground font-medium">{product.description}</p>
             </div>
           </div>
+
+          {/* Related Products */}
+          {relatedProducts.length > 0 && (
+            <div className="flex flex-col gap-3">
+              <span className="text-xs font-bold text-primary/80 uppercase tracking-widest">Rekomendasi Produk</span>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {relatedProducts.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Back to Shop Link */}
           <div className="flex justify-center mt-2 pb-4">
