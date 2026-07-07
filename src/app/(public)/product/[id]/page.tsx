@@ -40,6 +40,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               res.discountPrice !== null && res.discountPrice !== undefined
                 ? typeof res.discountPrice === "string" ? parseFloat(res.discountPrice) : res.discountPrice
                 : null,
+            stock: res.stock ?? 0,
             image: firstImage || "/placeholder.svg",
             category: res.category?.name || "Uncategorized",
             description: res.description || "",
@@ -76,6 +77,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               p.discountPrice !== null && p.discountPrice !== undefined
                 ? typeof p.discountPrice === "string" ? parseFloat(p.discountPrice) : p.discountPrice
                 : null,
+            stock: p.stock ?? 0,
             image: firstImage || "/placeholder.svg",
             category: p.category?.name || "Uncategorized",
             description: p.description || "",
@@ -170,7 +172,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   };
 
   const handleUpdateQuantity = (_id: string, q: number) => {
-    setQuantity(Math.max(1, q));
+    setQuantity(Math.min(Math.max(1, q), Math.max(1, product.stock ?? Infinity)));
   };
 
   return (

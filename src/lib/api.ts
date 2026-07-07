@@ -58,6 +58,7 @@ export interface ApiProduct {
   description?: string;
   price: string | number;
   discountPrice?: string | number | null;
+  stock: number;
   isActive: boolean;
   category: ApiProductCategory;
   galleries: ApiProductGallery[];

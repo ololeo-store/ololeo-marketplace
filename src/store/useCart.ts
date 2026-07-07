@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   price: number;
   discountPrice?: number | null;
+  stock?: number;
   image: string;
   category: string;
   description: string;
@@ -37,13 +38,17 @@ export const useCart = create<CartState>()(
         set((state) => {
           const existing = state.items.find((item) => item.id === product.id);
           if (existing) {
+            const limit = existing.stock ?? Infinity;
+            const capped = Math.min(existing.quantity + quantity, limit);
             return {
               items: state.items.map((item) =>
-                item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+                item.id === product.id ? { ...item, quantity: capped } : item
               ),
             };
           }
-          return { items: [...state.items, { ...product, quantity }] };
+          const limit = product.stock ?? Infinity;
+          const capped = Math.min(Math.max(1, quantity), Math.max(1, limit));
+          return { items: [...state.items, { ...product, quantity: capped }] };
         });
       },
       removeItem: (id) => {
@@ -52,7 +57,9 @@ export const useCart = create<CartState>()(
       updateQuantity: (id, quantity) => {
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+            item.id === id
+              ? { ...item, quantity: Math.min(Math.max(1, quantity), Math.max(1, item.stock ?? Infinity)) }
+              : item
           ),
         }));
       },

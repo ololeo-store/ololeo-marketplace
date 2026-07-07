@@ -29,6 +29,7 @@ export default function Shop() {
         p.discountPrice !== null && p.discountPrice !== undefined
           ? typeof p.discountPrice === "string" ? parseFloat(p.discountPrice) : p.discountPrice
           : null,
+      stock: p.stock ?? 0,
       image: firstImage || "/placeholder.svg",
       category: p.category?.name || "Uncategorized",
       description: p.description || "",

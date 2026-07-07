@@ -143,7 +143,7 @@ export default function CheckoutDrawer({
       />
       <div 
         className={cn(
-          "fixed top-0 right-0 bottom-0 w-full md:max-w-2xl lg:max-w-4xl bg-[#fdf2f8] shadow-2xl z-[70] transform transition-transform duration-500 ease-in-out flex flex-col",
+          "fixed top-0 right-0 bottom-0 w-full md:max-w-2xl lg:max-w-4xl bg-[#fdf2f8] dark:bg-background shadow-2xl z-[70] transform transition-transform duration-500 ease-in-out flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -448,7 +448,7 @@ export default function CheckoutDrawer({
                     {/* Jagged edge simulation */}
                     <div className="absolute -bottom-1 left-0 right-0 flex overflow-hidden">
                        {[...Array(20)].map((_, i) => (
-                         <div key={i} className="w-4 h-4 bg-[#fdf2f8] rotate-45 transform origin-top-left -mt-2" />
+                         <div key={i} className="w-4 h-4 bg-[#fdf2f8] dark:bg-background rotate-45 transform origin-top-left -mt-2" />
                        ))}
                     </div>
                   </div>
