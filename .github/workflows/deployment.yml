@@ -33,11 +33,11 @@ jobs:
         steps:
             - uses: appleboy/ssh-action@v1.0.3
               with:
-                host: 43.157.229.127
+                host: 43.157.198.253
                 username: ubuntu
-                key: ${{ secrets.SSH_KEY }}
-                port: 3467
+                password: forest-92%-mountain
+                port: 22
                 script: |
-                    cd ~/app/zanfuu/ololeo-store
-                    bash marketplace-redeploy.sh
+                    cd ~/app/ololeo-store
+                    bash deploy-marketplace.sh
         
