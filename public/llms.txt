@@ -1,0 +1,25 @@
+# Ololeo Store
+
+> Toko online buket bunga, cokelat, dan hadiah — melayani pengiriman same-day di area Jabodetabek sejak 2023.
+
+Ololeo Store adalah marketplace untuk buket bunga custom, hadiah Valentine, ulang tahun, dan momen spesial lainnya. Situs ini juga memuat artikel, tips perawatan bunga, promo musiman, dan pusat bantuan pelanggan.
+
+## Halaman Utama
+
+- [Beranda](https://ololeo-store.com/): Landing page utama, highlight produk & promo.
+- [Belanja](https://ololeo-store.com/shop): Katalog lengkap produk buket & hadiah, bisa difilter per kategori.
+- [Tentang Kami](https://ololeo-store.com/about): Profil dan cerita Ololeo Store.
+- [Artikel & Promo](https://ololeo-store.com/artikel): Blog, tips, promo, dan pusat bantuan.
+
+## Sitemap
+
+- [Sitemap Index](https://ololeo-store.com/sitemap.xml): Daftar seluruh sitemap per tipe konten.
+- [Halaman Statis](https://ololeo-store.com/page-sitemap.xml)
+- [Artikel & Post](https://ololeo-store.com/post-sitemap.xml)
+- [Tag Artikel](https://ololeo-store.com/posttag-sitemap.xml)
+- [Produk](https://ololeo-store.com/product-sitemap.xml)
+- [Kategori Produk](https://ololeo-store.com/category-sitemap.xml)
+
+## Catatan
+
+Harga dan ketersediaan stok bisa berubah sewaktu-waktu — selalu rujuk data langsung dari situs, bukan cache/snapshot lama. Halaman `/sapanyak`, `/login`, dan `/signup` adalah area internal/akun, bukan konten publik yang perlu diindeks.

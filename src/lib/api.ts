@@ -49,6 +49,7 @@ export interface ApiProductCategory {
   name: string;
   slug: string;
   description?: string;
+  updatedAt: string;
 }
 
 export interface ApiProduct {
@@ -63,6 +64,32 @@ export interface ApiProduct {
   category: ApiProductCategory;
   galleries: ApiProductGallery[];
   createdAt: string;
+  updatedAt: string;
+}
+
+// ─── CMS Types ───────────────────────────────────────────
+
+export interface ApiCmsTag {
+  id: string;
+  name: string;
+  slug: string;
+  updatedAt: string;
+}
+
+export interface ApiCmsPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  featuredImage: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  status: "DRAFT" | "SCHEDULED" | "PUBLISHED";
+  publishedAt: string | null;
+  updatedAt: string;
+  category: { id: string; name: string; slug: string; section: string };
+  tags: { id: string; name: string; slug: string }[];
 }
 
 // ─── Discount Types ─────────────────────────────────────
@@ -124,6 +151,27 @@ export const api = {
   // Categories
   getCategories: () => {
     return apiFetch<ApiProductCategory[]>('/public/product-categories');
+  },
+
+  // CMS
+  getCmsPosts: (params?: { page?: number; limit?: number; section?: string; tagId?: string; categoryId?: string; search?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', String(params.page));
+    if (params?.limit) searchParams.set('limit', String(params.limit));
+    if (params?.section) searchParams.set('section', params.section);
+    if (params?.tagId) searchParams.set('tagId', params.tagId);
+    if (params?.categoryId) searchParams.set('categoryId', params.categoryId);
+    if (params?.search) searchParams.set('search', params.search);
+    const qs = searchParams.toString();
+    return apiFetch<PaginatedResponse<ApiCmsPost>>(`/public/cms-posts${qs ? `?${qs}` : ''}`);
+  },
+
+  getCmsPostBySlug: (slug: string) => {
+    return apiFetch<ApiCmsPost>(`/public/cms-posts/${slug}`);
+  },
+
+  getCmsTags: () => {
+    return apiFetch<ApiCmsTag[]>('/public/cms-tags');
   },
 
   // Customer Auth
