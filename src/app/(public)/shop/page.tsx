@@ -1,20 +1,36 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { products as staticProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, Loader2, ChevronDown } from "lucide-react";
 import { api, ApiProduct, ApiProductCategory } from "@/lib/api";
 import { Product } from "@/store/useCart";
+import { slugify } from "@/lib/utils";
 
 export default function Shop() {
+  return (
+    <Suspense fallback={<main className="min-h-screen pt-6 pb-24" />}>
+      <ShopContent />
+    </Suspense>
+  );
+}
+
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
+  // Nama kategori -> slug asli dari backend (dipakai match ?category=<slug>
+  // dari category-sitemap.xml). Fallback ke slugify(name) kalau lagi pakai
+  // data statis (gak ada slug asli).
+  const [categorySlugs, setCategorySlugs] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [useApi, setUseApi] = useState(true);
 
@@ -58,19 +74,23 @@ export default function Shop() {
 
         // Handle categories
         let cats: string[] = ["All"];
+        let slugMap: Record<string, string> = {};
         if (Array.isArray(categoriesRes)) {
           cats = ["All", ...categoriesRes.map((c: ApiProductCategory) => c.name)];
+          slugMap = Object.fromEntries(categoriesRes.map((c: ApiProductCategory) => [c.name, c.slug]));
         }
 
         if (apiProducts.length > 0) {
           setProducts(apiProducts.map(mapApiProduct));
           setCategories(cats);
+          setCategorySlugs(slugMap);
           setUseApi(true);
         } else {
           // Fallback to static data
           setProducts(staticProducts);
           const uniqueCategories = ["All", ...new Set(staticProducts.map(p => p.category))];
           setCategories(uniqueCategories);
+          setCategorySlugs(Object.fromEntries(uniqueCategories.map((c) => [c, slugify(c)])));
           setUseApi(false);
         }
       } catch {
@@ -78,6 +98,7 @@ export default function Shop() {
         setProducts(staticProducts);
         const uniqueCategories = ["All", ...new Set(staticProducts.map(p => p.category))];
         setCategories(uniqueCategories);
+        setCategorySlugs(Object.fromEntries(uniqueCategories.map((c) => [c, slugify(c)])));
         setUseApi(false);
       } finally {
         setIsLoading(false);
@@ -85,6 +106,14 @@ export default function Shop() {
     }
     fetchData();
   }, [mapApiProduct]);
+
+  // Sync ?category=<slug> dari URL (dipakai category-sitemap.xml) ke activeCategory
+  // begitu daftar kategori kelar dimuat (API atau fallback statis).
+  useEffect(() => {
+    if (!categoryParam || categories.length <= 1) return;
+    const match = categories.find((c) => categorySlugs[c] === categoryParam);
+    if (match) setActiveCategory(match);
+  }, [categoryParam, categories, categorySlugs]);
 
   const filteredProducts = useMemo(() => {
     return products
