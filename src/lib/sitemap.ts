@@ -35,9 +35,13 @@ export interface SitemapIndexEntry {
   loc: string;
   lastmod: string;
   /** Non-standar (di luar spec sitemaps.org) — dipakai XSL stylesheet buat kolom
-   * "URL Count" di tampilan index. Search engine crawler abaikan elemen ini. */
+   * "URL Count" di tampilan index. Dirender di namespace custom (bukan namespace
+   * sitemaps.org) supaya parser search engine yang strict tidak menganggapnya
+   * sebagai invalid tag dan abaikan elemen ini dengan aman. */
   urlCount: number;
 }
+
+const COUNT_NS = "https://ololeo-store.com/schemas/sitemap-count/1.0";
 
 /** Sitemap index — daftar sitemap lain (page/category/product/tag/section/cms),
  * dirender pakai XSL stylesheet supaya tampil sebagai tabel di browser, mirip WordPress/Yoast. */
@@ -45,11 +49,11 @@ export function buildSitemapIndex(entries: SitemapIndexEntry[]): string {
   const sitemaps = entries
     .map(
       (entry) =>
-        `<sitemap><loc>${escapeXml(`${SITE_URL}${entry.loc}`)}</loc><lastmod>${entry.lastmod}</lastmod><url-count>${entry.urlCount}</url-count></sitemap>`,
+        `<sitemap><loc>${escapeXml(`${SITE_URL}${entry.loc}`)}</loc><lastmod>${entry.lastmod}</lastmod><oc:url-count>${entry.urlCount}</oc:url-count></sitemap>`,
     )
     .join("");
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap-index.xsl"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemaps}</sitemapindex>`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap-index.xsl"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:oc="${COUNT_NS}">${sitemaps}</sitemapindex>`;
 }
 
 export const XML_HEADERS = {

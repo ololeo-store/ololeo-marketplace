@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sm="http://www.sitemaps.org/schemas/sitemap/0.9">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sm="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:oc="https://ololeo-store.com/schemas/sitemap-count/1.0">
 <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
 <xsl:template match="/">
 <html lang="id">
@@ -42,7 +42,7 @@
 <xsl:for-each select="sm:sitemapindex/sm:sitemap">
 <tr>
 <td><a class="loc"><xsl:attribute name="href"><xsl:value-of select="sm:loc"/></xsl:attribute><xsl:value-of select="sm:loc"/></a></td>
-<td><xsl:value-of select="sm:url-count"/></td>
+<td><xsl:value-of select="oc:url-count"/></td>
 <td><xsl:value-of select="substring(sm:lastmod, 1, 10)"/></td>
 </tr>
 </xsl:for-each>
