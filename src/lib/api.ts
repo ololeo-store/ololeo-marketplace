@@ -129,6 +129,40 @@ export interface AuthResponse {
   refresh_token: string;
 }
 
+// ─── Cart & Checkout Types ───────────────────────────────
+
+export interface ApiCartItem {
+  id: string;
+  name: string;
+  price: number;
+  discountPrice: number | null;
+  stock: number;
+  image: string;
+  category: string;
+  description: string;
+  quantity: number;
+}
+
+export interface ApiCart {
+  items: ApiCartItem[];
+  totalItems: number;
+  totalPrice: number;
+}
+
+export interface CheckoutPayload {
+  customerName: string;
+  customerPhone: string;
+  customerAddress?: string;
+  pickupDate: string;
+  notes?: string;
+  discountCode?: string;
+}
+
+export interface CheckoutResult {
+  order: { id: string; orderNumber: string };
+  snapToken: string | null;
+}
+
 // ─── API Functions ──────────────────────────────────────
 
 export const api = {
@@ -196,5 +230,45 @@ export const api = {
   // Discounts
   getActiveDiscount: () => {
     return apiFetch<ApiActiveDiscount | null>('/public/discounts/active');
+  },
+
+  // Cart (requires a logged-in customer)
+  getCart: (token: string) => {
+    return apiFetch<ApiCart>('/public/cart', { token });
+  },
+
+  addCartItem: (token: string, productId: string, qty = 1) => {
+    return apiFetch<ApiCart>('/public/cart/items', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ productId, qty }),
+    });
+  },
+
+  updateCartItem: (token: string, productId: string, qty: number) => {
+    return apiFetch<ApiCart>(`/public/cart/items/${productId}`, {
+      method: 'PATCH',
+      token,
+      body: JSON.stringify({ qty }),
+    });
+  },
+
+  removeCartItem: (token: string, productId: string) => {
+    return apiFetch<ApiCart>(`/public/cart/items/${productId}`, {
+      method: 'DELETE',
+      token,
+    });
+  },
+
+  clearCart: (token: string) => {
+    return apiFetch<ApiCart>('/public/cart', { method: 'DELETE', token });
+  },
+
+  checkoutCart: (token: string, payload: CheckoutPayload) => {
+    return apiFetch<CheckoutResult>('/public/cart/checkout', {
+      method: 'POST',
+      token,
+      body: JSON.stringify(payload),
+    });
   },
 };

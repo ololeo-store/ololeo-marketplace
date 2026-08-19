@@ -17,13 +17,15 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const totalItems = useCart((state) => state.totalItems());
   const { isOpen: isCartOpen, setIsOpen: setIsCartOpen } = useCart();
+  const fetchCart = useCart((state) => state.fetchCart);
   const { customer, logout, hydrate, isLoading } = useAuth();
   const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
     hydrate();
-  }, [hydrate]);
+    fetchCart();
+  }, [hydrate, fetchCart]);
 
 
   if (pathname?.startsWith("/sapanyak")) {

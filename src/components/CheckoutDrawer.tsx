@@ -1,11 +1,12 @@
-import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight, Phone, Tag } from "lucide-react";
+import { X, Plus, Minus, Trash2, User, FileText, ReceiptText, ShoppingBag, ArrowLeft, Calendar, ChevronLeft, ChevronRight, Phone, Tag, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { CartItem } from "@/store/useCart";
+import { CartItem, useCart } from "@/store/useCart";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { api, ApiActiveDiscount } from "@/lib/api";
+import { paySnap } from "@/lib/midtrans";
 interface CheckoutDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,10 +35,22 @@ export default function CheckoutDrawer({
   const [whatsappError, setWhatsappError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const whatsappInputRef = useRef<HTMLInputElement>(null);
   const dateInputRef = useRef<HTMLButtonElement>(null);
+  const clearCart = useCart((state) => state.clearCart);
   const subtotalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  // Reset the submit/result state each time the drawer is reopened
+  useEffect(() => {
+    if (isOpen) {
+      setCheckoutError(null);
+      setCheckoutSuccess(false);
+    }
+  }, [isOpen]);
 
   // Auto-fill the promo code with whatever discount is currently live, if any
   useEffect(() => {
@@ -79,9 +92,9 @@ export default function CheckoutDrawer({
       setDateError(false);
     }
   }, [pickupDate, dateError]);
-  const handleCheckout = () => {
-    if (items.length === 0) return;
-    
+  const handleCheckout = async () => {
+    if (items.length === 0 || isSubmitting) return;
+
     let hasError = false;
     if (!customerName.trim()) {
       setNameError(true);
@@ -105,32 +118,46 @@ export default function CheckoutDrawer({
       hasError = true;
     }
     if (hasError) return;
-    
-    const formattedDate = pickupDate ? pickupDate.toLocaleDateString("id-ID", { 
-      day: "numeric", 
-      month: "long", 
-      year: "numeric" 
-    }) : "";
-    let message = `*𐙚 Halo, ololeo bucket*\n\n`;
-    message += `Saya ingin pesan bucket\n`;
-    message += `────୨ৎ──── \n`;
-    message += `*Atas Nama:* ${customerName}\n`;
-    message += `*WhatsApp:* ${customerWhatsapp}\n`;
-    if (formattedDate) message += `*Tanggal Pengambilan:* ${formattedDate}\n`;
-    if (notes) message += `*Notes:* ${notes}\n`;
-    message += `────୨ৎ────\n`;
-    message += `\n*𑣲 Pesanan*:\n`;
-    items.forEach(item => {
-      message += `- ${item.name} (x${item.quantity})\n`;
-      message += `  Rp ${(item.price * item.quantity).toLocaleString("id-ID")}\n`;
-    });
-    if (appliedDiscount) {
-      message += `\n*Kode Promo:* ${appliedDiscount.code} (-Rp ${discountAmount.toLocaleString("id-ID")})\n`;
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("customer_token") : null;
+    if (!token) {
+      window.location.href = "/login";
+      return;
     }
-    message += `\n*╰┈➤ˎˊ˗ Total : Rp ${totalPrice.toLocaleString("id-ID")}*\n\nApakah pesanan ini masih tersedia?`;
-    
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/6288809482113?text=${encodedMessage}`, "_blank");
+
+    setCheckoutError(null);
+    setIsSubmitting(true);
+    try {
+      const result = await api.checkoutCart(token, {
+        customerName,
+        customerPhone: customerWhatsapp,
+        pickupDate: pickupDate!.toISOString(),
+        notes: notes || undefined,
+        discountCode: appliedDiscount ? appliedDiscount.code : undefined,
+      });
+
+      await clearCart();
+
+      if (result.snapToken) {
+        const outcome = await paySnap(result.snapToken);
+        if (outcome === "success" || outcome === "pending") {
+          setCheckoutSuccess(true);
+        } else if (outcome === "error") {
+          setCheckoutError(
+            "Pembayaran gagal diproses. Pesanan Anda tetap tersimpan — silakan hubungi kami jika ada kendala."
+          );
+        }
+        // "closed": the customer just dismissed the Snap popup — the order
+        // and its pending payment still exist, nothing to show as an error.
+      } else {
+        // Midtrans isn't configured yet — the order is still recorded.
+        setCheckoutSuccess(true);
+      }
+    } catch (err: any) {
+      setCheckoutError(err.message || "Gagal membuat pesanan. Silakan coba lagi.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <>
@@ -157,14 +184,28 @@ export default function CheckoutDrawer({
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
-          {items.length === 0 ? (
+          {checkoutSuccess ? (
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+              <CheckCircle2 className="w-16 h-16 text-emerald-500" />
+              <p className="text-xl font-bold text-gray-800 dark:text-foreground">Pesanan berhasil dibuat!</p>
+              <p className="text-sm text-gray-500 dark:text-muted-foreground max-w-xs">
+                Kami akan menghubungi Anda lewat WhatsApp untuk konfirmasi pesanan.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-2 px-8 py-3 bg-emerald-500 text-white rounded-full font-bold hover:bg-emerald-600 transition-all"
+              >
+                Tutup
+              </button>
+            </div>
+          ) : items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-muted-foreground space-y-4">
               <div className="w-24 h-24 bg-white dark:bg-card rounded-full flex items-center justify-center shadow-inner">
                 <ShoppingBag className="w-12 h-12 opacity-20" />
               </div>
               <p className="text-lg font-medium">Keranjang Anda masih kosong</p>
-              <Link 
-                href="/shop" 
+              <Link
+                href="/shop"
                 onClick={onClose}
                 className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg hover:shadow-primary/30 transition-all"
               >
@@ -442,7 +483,7 @@ export default function CheckoutDrawer({
                       </div>
                       
                       <div className="pt-4 mt-4 border-t border-dashed border-gray-100 dark:border-border italic text-[10px] text-gray-400 dark:text-muted-foreground text-center leading-relaxed">
-                        Anda akan diarahkan ke WhatsApp ketika menekan tombol checkout
+                        Pembayaran diproses aman lewat Midtrans
                       </div>
                     </div>
                     {/* Jagged edge simulation */}
@@ -452,24 +493,39 @@ export default function CheckoutDrawer({
                        ))}
                     </div>
                   </div>
-                  
+
+                  {checkoutError && (
+                    <div className="mt-6 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium flex items-start gap-2">
+                      <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                      <span>{checkoutError}</span>
+                    </div>
+                  )}
+
                   <div className={cn(
                     "mt-8 flex gap-3",
                     showAddMore ? "flex-row" : "flex-col"
                   )}>
-                    <button 
+                    <button
                       onClick={handleCheckout}
+                      disabled={isSubmitting}
                       className={cn(
-                        "py-5 rounded-[2rem] bg-gradient-to-r from-primary via-[#f472b6] to-secondary text-white font-bold transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-2",
+                        "py-5 rounded-[2rem] bg-gradient-to-r from-primary via-[#f472b6] to-secondary text-white font-bold transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-2 disabled:opacity-60",
                         showAddMore ? "flex-1 text-sm px-2" : "w-full text-lg"
                       )}
                     >
-                      Checkout
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Memproses...
+                        </>
+                      ) : (
+                        "Checkout"
+                      )}
                     </button>
-                    
+
                     {showAddMore && (
-                      <Link 
-                        href="/shop" 
+                      <Link
+                        href="/shop"
                         onClick={onClose}
                         className="flex-1 py-5 rounded-[2rem] border-2 border-primary/20 text-primary font-bold text-center hover:bg-primary/5 transition-all flex items-center justify-center gap-1 text-sm px-2"
                       >
@@ -479,7 +535,7 @@ export default function CheckoutDrawer({
                     )}
                   </div>
                   <p className="text-center text-[10px] text-gray-400 dark:text-muted-foreground font-medium pt-4">
-                    Pesanan akan diteruskan ke admin melalui WhatsApp
+                    Pembayaran online lewat Midtrans, konfirmasi pesanan lewat WhatsApp
                   </p>
                 </div>
               </div>

@@ -20,7 +20,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { addItem } = useCart();
+  const { addItem, removeItem, updateQuantity, items: cartItems } = useCart();
   const [isAdded, setIsAdded] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -168,6 +168,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
   const handleCheckoutNow = (e: React.MouseEvent<HTMLButtonElement>) => {
     triggerFlowerPop(e);
+    addItem(cartProduct, quantity);
     setIsCheckoutOpen(true);
   };
 
@@ -177,13 +178,15 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
   return (
     <main className="min-h-screen pt-0 md:pt-8 pb-0 md:pb-24 bg-white dark:bg-card relative overflow-hidden">
-      {/* Checkout Drawer for Direct Buy */}
+      {/* Checkout Drawer for Direct Buy — reflects the actual persisted cart,
+          since checkout always settles whatever is in the customer's cart */}
       <CheckoutDrawer
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
-        items={[{ ...cartProduct, quantity }]}
+        items={cartItems}
         title="Checkout Pesanan"
-        onUpdateQuantity={handleUpdateQuantity}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
       />
 
       {/* Flower Particles Animation Layer */}

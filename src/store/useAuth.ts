@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { api, CustomerProfile } from '@/lib/api';
+import { useCart } from './useCart';
 
 interface AuthState {
   token: string | null;
@@ -22,6 +23,7 @@ export const useAuth = create<AuthState>((set, get) => ({
     localStorage.setItem('customer_token', res.accessToken);
     localStorage.setItem('customer_data', JSON.stringify(res.customer));
     set({ token: res.accessToken, customer: res.customer });
+    useCart.getState().fetchCart();
   },
 
   register: async (data) => {
@@ -29,12 +31,14 @@ export const useAuth = create<AuthState>((set, get) => ({
     localStorage.setItem('customer_token', res.accessToken);
     localStorage.setItem('customer_data', JSON.stringify(res.customer));
     set({ token: res.accessToken, customer: res.customer });
+    useCart.getState().fetchCart();
   },
 
   logout: () => {
     localStorage.removeItem('customer_token');
     localStorage.removeItem('customer_data');
     set({ token: null, customer: null });
+    useCart.getState().resetLocal();
   },
 
   hydrate: () => {
