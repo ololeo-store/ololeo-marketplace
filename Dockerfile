@@ -12,6 +12,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Next.js collects anonymous telemetry. Let's disable it.
 ENV NEXT_TELEMETRY_DISABLED 1
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time,
+# so this must be set here (not just at runtime) or client code falls
+# back to its localhost default in production.
+ENV NEXT_PUBLIC_API_URL https://api.ololeo-store.com/api
 RUN npm run build
 
 # Stage 3: Production Runner
@@ -20,6 +24,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_PUBLIC_API_URL https://api.ololeo-store.com/api
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs
